@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<section>
+
+<div class="row mt-5">
+     
+       <div class="col-md-6 offset-md-3">
+          
+          <div class="card">
+          	<div class="card-body">
+          	  <h5 style="text-align: center;">Change Password</h5>
+          	  <hr>
+          	   
+          	    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+				  <strong></strong> Please Match Password !!!
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+          	   
+          	   <form th:action="@{/update-password}" method="post">
+          	   
+          	   <div class="mt-3">
+          	    <label for="password">Enter Old Password</label>
+          	    <input type="text" name="password" class="form-control" required="required">
+          	   </div>
+          	   
+          	   <div class="mt-3">
+          	    <label for="newPassword1">Enter new Password</label>
+          	    <input type="text" name="newPassword1" class="form-control" required="required">
+          	   </div>
+          	   
+          	   <div class="mt-3">
+          	    <label for="newPassword2">Re-Enter new Password</label>
+          	    <input type="text" name="newPassword2" class="form-control" required="required">
+          	   </div>
+          	   
+          	    <div class="mt-3 container text-center">
+          	     
+          	    <input type="submit"   class="btn btn-primary" value="Update">
+          	   </div>
+          	   </form>
+          	  
+          	</div>
+          </div>
+          
+       </div>
+     
+     </div>
+
+</section>
+
+</body>
+</html>

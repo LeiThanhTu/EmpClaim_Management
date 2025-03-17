@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>SMP</title>
+</head>
+<body>
+<section>
+
+    <div class="row">
+
+        <div class="col-md-10 offset-md-1">
+
+
+            <div class="card mt-3">
+
+                <div class="card-body">
+
+                    <h4 style="text-align: center;">Update Employee Registration Form</h4>
+                    <hr>
+
+                    <form th:action="@{/edit-employee}" method="post">
+                        <input type="hidden" name="id" th:value="${employee.id}">
+
+                        <div class="row">
+                            <div class="col-md-3 mt-2">
+                                <label for="employeeName" class="form-label">Employee Name</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="text" name="employeeName" th:value="${employee.employeeName}" id="employeeName" autocomplete="off" required="required" >
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="email" class="form-label">Email</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="email" name="email" th:value="${employee.email}" id="email" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="gender" class="form-label">Gender</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-check-input" type="radio"  name="gender" th:checked="${employee.gender == 'M'}" id="gender" required="required" value="M"> Male
+
+                                <input class="form-check-input ms-5" type="radio" name="gender"  th:checked="${employee.gender == 'F'}" id="gender" required="required" value="F"> Female
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="date" name="dateOfBirth" th:value="${employee.dateOfBirth}"  id="dateOfBirth" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="joinDate" class="form-label">Joining Date</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="date" name="joinDate"  th:value="${employee.joinDate}" id="joinDate" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="mobileNumber" class="form-label">Mobile Number</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="number" name="mobileNumber"  th:value="${employee.mobileNumber}"  id="mobileNumber" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="aadhaarNumber" class="form-label">Aadhaar Number</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="number" name="aadhaarNumber" th:value="${employee.aadhaarNumber}"  id="aadhaarNumber" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="accountNumber" class="form-label">Account Number</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="text" name="accountNumber"  th:value="${employee.accountNumber}" id="accountNumber" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="department" class="form-label">Department</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <select class="form-select" id="department" name="department" onchange="updateDesignations()">
+                                    <option th:selected="${employee.department == ''}">Select Department</option>
+                                    <option value="Development" th:selected="${employee.department == 'Development'}">Development</option>
+                                    <option value="QA & Automation Testing"  th:selected="${employee.department == 'QA & Automation Testing'}">QA & Automation Testing</option>
+                                    <option value="Networking" th:selected="${employee.department == 'Networking'}">Networking</option>
+                                    <option value="HR Team" th:selected="${employee.department == 'HR Team'}">HR Team</option>
+                                    <option value="Security" th:selected="${employee.department == 'Security'}">Security</option>
+                                    <option value="Sales & Marketing" th:selected="${employee.department == 'Sales & Marketing'}">Sales & Marketing</option>
+                                </select>
+                            </div>
+
+
+
+                            <div class="col-md-3 mt-2">
+                                <label for="designation" class="form-label">Designation</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <select class="form-select" id="designation" name="designation">
+                                    <option th:selected="${employee.designation == ''}">Select Designation</option>
+                                    <option  th:selected="${employee.designation}" th:text="${employee.designation}">Select Designation</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="previousCompany" class="form-label">Previous Company Name</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="text" name="previousCompany"  th:value="${employee.previousCompany}"  id="previousCompany" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="pfNumber" class="form-label">PF Number</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="text" name="pfNumber"  th:value="${employee.pfNumber}"  id="pfNumber" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="salary" class="form-label">Salary</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <input class="form-control" type="number" name="salary"  th:value="${employee.salary}" id="salary" autocomplete="off" required="required">
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="currentAddress" class="form-label">Current Address</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <textarea rows="" cols="" name="currentAddress"  th:text="${employee.currentAddress}"  id="currentAddress" style="width: 100%" required="required"></textarea>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="permanrntAddress" class="form-label">Permanent Address</label>
+                            </div>
+                            <div class="col-md-9 mt-2">
+                                <textarea rows="" cols="" name="permanrntAddress"  th:text="${employee.permanrntAddress}" id="permanrntAddress" style="width: 100%" required="required" maxlength="1000" minlength="10"></textarea>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>
+                            <div class="col-md-9 mt-2 form-check form-switch form-switch">
+                                <input style="font-size: 25px" class="form-check-input ms-1" type="checkbox" name="active" id="active" th:checked="${employee.active}">
+                            </div>
+
+                            <div class="container text-center mt-3">
+                                <input type="submit" class="btn btn-success" value="Update">
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

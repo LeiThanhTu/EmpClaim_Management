@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<section>
+
+<div class="row">
+    
+      <div class="col-md-6 offset-md-3 mt-3">
+      
+         <div class="card">
+         
+           <div class="card-body">
+              
+              <div class="container text-center">
+             <img alt="image" src="img/default.png" style="height: 100px">
+              <h5 th:text="${employee.employeeName}"></h5>
+              <p><i th:text="${employee.designation}"></i></p>
+              <hr>
+             </div>
+             
+             <table class="table">
+			  
+			  <tbody>
+			    <tr>
+			      <th scope="row">1</th>
+			      <td><b>Email</b></td>
+			      <td th:text="${employee.email}">Otto</td>
+ 			    </tr>
+			    <tr>
+			      <th scope="row">2</th>
+			      <td><b>Gender</b></td>
+			      <td th:text="${employee.gender}">Thornton</td>
+ 			    </tr>
+			    <tr>
+			      <th scope="row">3</th>
+			      <td ><b>Date of Birth </b></td>
+			      <td th:text="${employee.dateOfBirth}">Larry the Bird</td>
+ 			    </tr>
+ 			    
+ 			    <tr>
+			      <th scope="row">4</th>
+			      <td ><b>Mobile Number </b></td>
+			      <td th:text="${employee.mobileNumber}">Larry the Bird</td>
+ 			    </tr>
+ 			    
+ 			    <tr>
+			      <th scope="row">5</th>
+			      <td ><b>Department</b></td>
+			      <td th:text="${employee.department}">Larry the Bird</td>
+ 			    </tr>
+ 			    
+ 			    <tr>
+			      <th scope="row">6</th>
+			      <td ><b>Current Address</b></td>
+			      <td th:text="${employee.currentAddress}">Larry the Bird</td>
+ 			    </tr>
+ 			    
+ 			    <tr>
+			      <th scope="row">7</th>
+			      <td ><b>Permanent Address</b></td>
+			      <td th:text="${employee.permanrntAddress}">Larry the Bird</td>
+ 			    </tr>
+			  </tbody>
+			</table>
+             
+           </div>
+         
+         </div>
+      
+      </div>
+    
+    </div>
+
+</section>
+
+</body>
+</html>
