@@ -54,7 +54,7 @@
             <td th:text="${e.active}">Yes</td>
             <td> 
              <a th:onclick="|editRecord(${e.id})|" style="color: blue; cursor: pointer;" class="fa-solid fa-pen-to-square ms-2"></a>
-             <i style="color: red; cursor: pointer;" class="fas fa-trash ms-2"></i>
+             <i th:onclick="|deleteRecordById (${e.id})|" style="color: red; cursor: pointer;" class="fas fa-trash ms-2"></i>
             </td>
         </tr>
        </tbody>

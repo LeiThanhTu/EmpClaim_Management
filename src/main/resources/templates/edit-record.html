@@ -20,7 +20,7 @@
                     <hr>
 
                     <form th:action="@{/edit-employee}" method="post">
-                        <input type="hidden" name="id" th:value="${employee.id}">
+                        <input type="text" name="id" th:value="${employee.id}">
 
                         <div class="row">
                             <div class="col-md-3 mt-2">
@@ -41,9 +41,9 @@
                                 <label for="gender" class="form-label">Gender</label>
                             </div>
                             <div class="col-md-9 mt-2">
-                                <input class="form-check-input" type="radio"  name="gender" th:checked="${employee.gender == 'M'}" id="gender" required="required" value="M"> Male
+                                <input class="form-check-input" type="radio"  name="gender" th:checked="${employee.gender == 'M'}" id="genderMale" required="required" value="M"> Male
 
-                                <input class="form-check-input ms-5" type="radio" name="gender"  th:checked="${employee.gender == 'F'}" id="gender" required="required" value="F"> Female
+                                <input class="form-check-input ms-5" type="radio" name="gender"  th:checked="${employee.gender == 'F'}" id="genderFemale" required="required" value="F"> Female
                             </div>
 
                             <div class="col-md-3 mt-2">
@@ -68,10 +68,10 @@
                             </div>
 
                             <div class="col-md-3 mt-2">
-                                <label for="aadhaarNumber" class="form-label">Aadhaar Number</label>
+                                <label for="aadhaarNumb" class="form-label">Aadhaar Number</label>
                             </div>
                             <div class="col-md-9 mt-2">
-                                <input class="form-control" type="number" name="aadhaarNumber" th:value="${employee.aadhaarNumber}"  id="aadhaarNumber" autocomplete="off" required="required">
+                                <input class="form-control" type="number" name="aadhaarNumb" th:value="${employee.aadhaarNumb}"  id="aadhaarNumb" autocomplete="off" required="required">
                             </div>
 
                             <div class="col-md-3 mt-2">
@@ -103,8 +103,9 @@
                             </div>
                             <div class="col-md-9 mt-2">
                                 <select class="form-select" id="designation" name="designation">
-                                    <option th:selected="${employee.designation == ''}">Select Designation</option>
-                                    <option  th:selected="${employee.designation}" th:text="${employee.designation}">Select Designation</option>
+                                  <option value="">Select Designation</option>
+<option th:each="designation : ${designations}" th:value="${designation}" th:text="${designation}" th:selected="${employee.designation == designation}"></option>
+                                  
                                 </select>
                             </div>
 
@@ -140,7 +141,7 @@
                                 <label for="permanrntAddress" class="form-label">Permanent Address</label>
                             </div>
                             <div class="col-md-9 mt-2">
-                                <textarea rows="" cols="" name="permanrntAddress"  th:text="${employee.permanrntAddress}" id="permanrntAddress" style="width: 100%" required="required" maxlength="1000" minlength="10"></textarea>
+                                <textarea name="permanrntAddress"  th:text="${employee.permanrntAddress}" id="permanrntAddress" style="width: 100%" required="required" maxlength="1000" minlength="10"></textarea>
                             </div>
 
                             <div class="col-md-3 mt-2">

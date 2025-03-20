@@ -173,4 +173,24 @@ public class HrController {
 		model.addAttribute("employee", employee);
 	return "edit-record";
 	}
+	@PostMapping("/edit-employee")
+	public String updateRecord(@ModelAttribute Employee employee) {
+		int id = employee.getId();
+		
+		Employee getEmp = employeeRepo.findById(id).get();
+		
+		if(getEmp !=  null) {
+			employeeRepo.save(employee);
+		}
+		
+		return "redirect:/all-employee";
+	}
+	
+	@GetMapping("/deleteRecord-byId")
+	public String deleteRecordById(@RequestParam("id") int id) {
+		
+		employeeRepo.deleteById(id);
+		
+		return "redirect:/all-employee";
+	}
 }
