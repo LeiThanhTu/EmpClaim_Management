@@ -71,6 +71,9 @@ public class Employee {
 
 	private String password;
 	
+	private String role;
+	
+	
 	public Employee() {
 		super();
 	}
@@ -237,6 +240,24 @@ public class Employee {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	
+	
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	@Override

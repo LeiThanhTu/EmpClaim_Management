@@ -126,7 +126,7 @@
             <div class="card-body">
               <h5>Recent Activity</h5>
               <hr>
-               <table  class="table" style="width:100%">
+              <table  class="table" style="width:100%">
         <thead>
             <tr>
                 <th>S.No</th> 
@@ -138,7 +138,21 @@
                 <th>For Approve</th>
             </tr>
         </thead>
-       
+        <tbody>
+           <tr th:each="e,i : ${statusList}">
+            <td th:text="${i.index + 1}">1</td>
+            
+            <td   th:text="${e.subject}">Application</td>
+            <td   th:text="${e.text}">Hello Sir, I want 10 days leave because I am going for training.</td>
+            <td   th:text="${e.addedDate}">2024-04-01</td>
+            <td style="cursor: pointer">
+                
+                  
+                    <span th:text="${e.status}"></span>
+                 
+            </td>
+        </tr>
+    </tbody>
     </table>
             </div>
          </div>

@@ -8,4 +8,5 @@ public interface EmployeeRepo extends JpaRepository<Employee, Integer>{
 	
 	public Employee findByIdAndPassword(int empId, String password ) ;
 
+	public Employee findByIdAndPasswordAndRole(int empId, String password, String role ) ;
 }
