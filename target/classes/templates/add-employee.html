@@ -1,212 +1,393 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{base :: layout(~{::section})}">
-<head>
-<meta charset="UTF-8">
-<title>SMP</title>
-</head>
-<body>
-	<section>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base :: layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SMP</title>
+  </head>
+  <body>
+    <section>
+      <div class="row">
+        <div class="col-md-10 offset-md-1">
+          <div class="card mt-3">
+            <div class="card-body">
+              <h4 style="text-align: center">Employee Registration Form</h4>
+              <hr />
 
-		<div class="row">
-			<div class="col-md-10 offset-md-1">
-				<div class="card mt-3">
-					<div class="card-body">
-						<h4 style="text-align: center;">Employee Registration Form</h4>
-						<hr>
-						<form th:action="@{/save-employee}" method="post">
-							<div class="row">
-								<div class="col-md-3 mt-2">
-									<label for="employeeName" class="form-label">Employee Name</label>
-								</div>
+              <form
+                th:action="@{/save-employee}"
+                method="post"
+                th:object="${employee}"
+              >
+                <div class="row">
+                  <div class="col-md-3 mt-2">
+                    <label for="employeeName" class="form-label"
+                      >Employee Name</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="employeeName"
+                      th:field="*{employeeName}"
+                      id="employeeName"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('employeeName')}"
+                      th:errors="*{employeeName}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="text" class="form-control" name="employeeName"
-										id="employeeName" required="required">
+                  <div class="col-md-3 mt-2">
+                    <label for="email" class="form-label">Email</label>
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      th:field="*{email}"
+                      id="email"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('email')}"
+                      th:errors="*{email}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="gender" class="form-label">Gender</label>
+                  </div>
+                  <div class="col-md-9 mt-2 d-flex align-items-center">
+                    <div class="form-check me-4">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="gender"
+                        th:field="*{gender}"
+                        id="genderM"
+                        value="M"
+                      />
+                      <label class="form-check-label" for="genderM">Male</label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="gender"
+                        th:field="*{gender}"
+                        id="genderF"
+                        value="F"
+                      />
+                      <label class="form-check-label" for="genderF"
+                        >Female</label
+                      >
+                    </div>
+                  </div>
+                  <p
+                    th:if="${#fields.hasErrors('gender')}"
+                    th:errors="*{gender}"
+                    class="text-danger"
+                  ></p>
 
-								<!-- Email  -->
-								<div class="col-md-3 mt-2">
-									<label for="email" class="form-label">Email</label>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="dateOfBirth" class="form-label"
+                      >Date of Birth</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="dateOfBirth"
+                      th:field="*{dateOfBirth}"
+                      id="dateOfBirth"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('dateOfBirth')}"
+                      th:errors="*{dateOfBirth}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="email" class="form-control" name="email"
-										id="email" required="required">
+                  <div class="col-md-3 mt-2">
+                    <label for="joinDate" class="form-label"
+                      >Date of Join</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="joinDate"
+                      th:field="*{joinDate}"
+                      id="joinDate"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('joinDate')}"
+                      th:errors="*{joinDate}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								</div>
-								<!-- Gender -->
-								<div class="row mt-2">
-									<div class="col-md-3">
-										<label for="gender" class="form-label">Gender</label>
-									</div>
-									<div class="col-md-9 d-flex align-items-center">
-										<div class="form-check me-4" style="margin-left: 15px;">
-											<input class="form-check-input" type="radio" name="gender"
-												id="gender" value="M"> <label
-												class="form-check-label" for="genderM">Male</label>
-										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" name="gender"
-												id="gender" value="F"> <label
-												class="form-check-label" for="genderF">Female</label>
-										</div>
-									</div>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="mobileNumber" class="form-label"
+                      >Mobile Number</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="mobileNumber"
+                      th:field="*{mobileNumber}"
+                      id="mobileNumber"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('mobileNumber')}"
+                      th:errors="*{mobileNumber}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<!--DOB -->
-								<div class="col-md-3 mt-2">
-									<label for="dateOfBirth" class="form-label">Date of Birth</label>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="aadhaarNumb" class="form-label"
+                      >PIC Number</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="aadhaarNumb"
+                      th:field="*{aadhaarNumb}"
+                      id="aadhaarNumb"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('aadhaarNumb')}"
+                      th:errors="*{aadhaarNumb}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth"
-										required="required">
+                  <div class="col-md-3 mt-2">
+                    <label for="accountNumber" class="form-label"
+                      >Account Number</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="accountNumber"
+                      th:field="*{accountNumber}"
+                      id="accountNumber"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('accountNumber')}"
+                      th:errors="*{accountNumber}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="department" class="form-label"
+                      >Department</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <select
+                      class="form-select"
+                      id="department"
+                      name="department"
+                      th:field="*{department}"
+                      onchange="updateDesignations()"
+                    >
+                      <option value="">Select Department</option>
+                      <option value="Development">Development</option>
+                      <option value="QA & Automation Testing">
+                        QA & Automation Testing
+                      </option>
+                      <option value="Networking">Networking</option>
+                      <option value="HR Team">HR Team</option>
+                      <option value="Security">Security</option>
+                    </select>
+                    <p
+                      th:if="${#fields.hasErrors('department')}"
+                      th:errors="*{department}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<!-- DOJ  -->
-								<div class="col-md-3 mt-2">
-									<label for="joinDate" class="form-label">Date of Join</label>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="designation" class="form-label"
+                      >Designation</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <select
+                      class="form-select"
+                      id="designation"
+                      name="designation"
+                      th:field="*{designation}"
+                    >
+                      <option value="">Select Designation</option>
+                    </select>
+                    <p
+                      th:if="${#fields.hasErrors('designation')}"
+                      th:errors="*{designation}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="date" class="form-control" name="joinDate" id="joinDate"
-										required="required">
+                  <div class="col-md-3 mt-2">
+                    <label for="previousCompany" class="form-label"
+                      >Previous Company Name</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="previousCompany"
+                      th:field="*{previousCompany}"
+                      id="previousCompany"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('previousCompany')}"
+                      th:errors="*{previousCompany}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="pfNumber" class="form-label">SI Number</label>
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="pfNumber"
+                      th:field="*{pfNumber}"
+                      id="pfNumber"
+                      autocomplete="off"
+                    />
+                    <p
+                      th:if="${#fields.hasErrors('pfNumber')}"
+                      th:errors="*{pfNumber}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<!-- Mobile Number  -->
-								<div class="col-md-3 mt-2">
-									<label for="mobileNumber" class="form-label">Mobile Number</label>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="salary" class="form-label">Salary</label>
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="salary"
+                      id="salary"
+                      autocomplete="off"
+                    />
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="number" class="form-control" name="mobileNumber"
-										id="mobileNumber" required="required">
+                  <div class="col-md-3 mt-2">
+                    <label for="currentAddress" class="form-label"
+                      >Current Address</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <textarea
+                      class="form-control"
+                      name="currentAddress"
+                      th:field="*{currentAddress}"
+                      id="currentAddress"
+                      rows="3"
+                    ></textarea>
+                    <p
+                      th:if="${#fields.hasErrors('currentAddress')}"
+                      th:errors="*{currentAddress}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="permanrntAddress" class="form-label"
+                      >Permanent Address</label
+                    >
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <textarea
+                      class="form-control"
+                      name="permanrntAddress"
+                      th:field="*{permanrntAddress}"
+                      id="permanrntAddress"
+                      rows="3"
+                      maxlength="1000"
+                      minlength="10"
+                    ></textarea>
+                    <p
+                      th:if="${#fields.hasErrors('permanrntAddress')}"
+                      th:errors="*{permanrntAddress}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<!-- A  -->
-								<div class="col-md-3 mt-2">
-									<label for="aadhaarNumb" class="form-label">PIC Number</label>
-								</div>
+                  <div class="col-md-3 mt-2">
+                    <label for="role" class="form-label">Role</label>
+                  </div>
+                  <div class="col-md-9 mt-2">
+                    <select
+                      class="form-select"
+                      name="role"
+                      th:field="*{role}"
+                      id="role"
+                    >
+                      <option value="USER">User</option>
+                      <option value="ADMIN">Admin</option>
+                    </select>
+                    <p
+                      th:if="${#fields.hasErrors('role')}"
+                      th:errors="*{role}"
+                      class="text-danger"
+                    ></p>
+                  </div>
 
-								<div class="col-md-9 mt-2">
-									<input type="number" class="form-control" name="aadhaarNumb"
-										id="aadhaarNumb" required="required">
+                  <div class="col-md-3 mt-2">
+                    <label class="form-check-label" for="active">Active</label>
+                  </div>
+                  <div
+                    class="col-md-9 mt-2 form-check form-switch d-flex align-items-center"
+                  >
+                    <input
+                      class="form-check-input ms-auto"
+                      type="checkbox"
+                      name="active"
+                      id="active"
+                      checked
+                    />
+                  </div>
 
-								</div>
-
-								<!-- Account  -->
-								<div class="col-md-3 mt-2">
-									<label for="accountNumber" class="form-label">Account
-										Number</label>
-								</div>
-
-								<div class="col-md-9 mt-2">
-									<input type="text" class="form-control" name="accountNumber"
-										id="accountNumber" required="required">
-
-								</div>
-								
-								 <div class="col-md-3 mt-2">
-					    <label for="department" class="form-label">Department</label> 
-					</div>
-					<div class="col-md-9 mt-2">
-					    <select class="form-select" id="department" name="department"  onchange="updateDesignations()">
-					        <option selected="selected">Select Department</option>
-					        <option value="Development">Development</option>
-					        <option value="QA & Automation Testing">QA & Automation Testing</option>
-					        <option value="Networking">Networking</option>
-					        <option value="HR Team">HR Team</option>
-					        <option value="Security">Security</option>
-					       
-					    </select>
-				
-					</div>
-					    <div class="col-md-3 mt-2">
-				    <label for="designation" class="form-label">Designation</label> 
-				</div>
-				<div class="col-md-9 mt-2">
-				    <select class="form-select" id="designation" name="designation">
-				        <option selected="selected">Select Designation</option>
-				    </select>
-				</div>
-                 
-                 <div class="col-md-3 mt-2">
-	                <label for="previousCompany" class="form-label">Previous Company Name</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	                <input class="form-control" type="text" name="previousCompany" id="previousCompany" >
-               
-                 </div>
-					
-					   <div class="col-md-3 mt-2">
-	                <label for="pfNumber" class="form-label">SI Number</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	                <input class="form-control" type="text" name="pfNumber" id="pfNumber" autocomplete="off" required="required" >
-             
-                 </div>
-                 
-                 <div class="col-md-3 mt-2">
-	                <label for="salary" class="form-label">Salary</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	                <input class="form-control" type="number" name="salary" id="salary" autocomplete="off" >
-                 
-                 </div> 
-              
-               <div class="col-md-3 mt-2">
-	                <label for="currentAddress" class="form-label">Current Address</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	               <textarea rows="" cols="" name="currentAddress" id="currentAddress" style="width: 100%" ></textarea>
-                 </div>
-                 
-                 <div class="col-md-3 mt-2">
-	                <label for="permanrntAddress" class="form-label">Permanent Address</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	               <textarea rows="" cols="" name="permanrntAddress" id="permanrntAddress" style="width: 100%" required="required" maxlength="1000" minlength="10"></textarea>
-                 </div>
-                 
-                 <div class="col-md-3 mt-2">
-	                <label for="role" class="form-label">Role</label>
-	             </div>
-	             <div class="col-md-9 mt-2">
-	              <select class="form-select" name="role" id="role">
-	                 <option value="USER">User</option>
-	                 <option value="ADMIN">Admin</option>
-	              </select>
-                 
-                 </div>
-					
-					  <div class="col-md-3 mt-2">
-	                 <label class="form-check-label" for="active">Active</label>
-	             </div>
-	             <div class="col-md-9 mt-2 form-check form-switch form-switch">
-	              <input style="font-size: 25px" class="form-check-input ms-1" type="checkbox" name="active" id="active" checked>
-	               
-                 </div>
-              
-                <div class="container text-center mt-3">
-                <input type="submit" class="btn btn-success" value="Submit">
+                  <div class="col-12 text-center mt-3">
+                    <input
+                      type="submit"
+                      class="btn btn-success"
+                      value="Submit"
+                    />
+                  </div>
                 </div>
-             </div>
-             
-
-
-						</form>
-
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</section>
-
-</body>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>

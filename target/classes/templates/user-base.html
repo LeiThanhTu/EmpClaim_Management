@@ -133,7 +133,17 @@
             </main>
         </div>
     </div>
-    
+        <nav class="navbar navbar-light fixed-bottom d-block d-md-none" style="background-color: #e3f2fd;">
+    <div class="d-flex justify-content-around w-100">
+        <a th:href="@{/dash-board}" class="flex-fill text-center"><i class="fas fa-tachometer-alt"></i></a>
+        <a th:href="@{/add-employee}" class="flex-fill text-center"><i class="fas fa-user-plus"></i></a>
+        <a th:href="@{/all-employee}" class="flex-fill text-center"><i class="fas fa-users"></i></a>
+        <a th:href="@{/all-employee}" class="flex-fill text-center"><i class="fas fa-pencil-alt"></i></a>
+        <a th:href="@{/create-post}" class="flex-fill text-center"><i class="fas fa-tasks"></i></a>
+        <a th:href="@{/my-profile}" class="flex-fill text-center"><i class="fas fa-user"></i></a>
+        <a  th:href="@{/setting}" class="flex-fill text-center"><i class="fas fa-cog"></i></a>
+    </div>
+</nav>
     
 </body>
 

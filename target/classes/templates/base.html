@@ -93,9 +93,74 @@
 					data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
 					<img src="img/chat.gif" alt="" style="width: 55px; height: 55px" />
 				</i>
+				
+				
+				 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header" style="padding-top: 100px">
+    <h5 id="offcanvasRightLabel">Chat</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="chat-container" style="max-height: 400px; overflow-y: auto;">
+      <!-- Received Message -->
+      <div class="received-message">
+        <p class="message" style="background-color: #e0e0e0; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 10px;">
+          Hello, how are you?
+        </p>
+        <small style="color: gray;">10:15 AM</small>
+      </div>
+
+      <!-- Sent Message -->
+      <div class="sent-message" style="text-align: right;">
+        <p class="message" style="background-color: #007bff; color: white; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 10px;">
+          I'm good, thanks! What about you?
+        </p>
+        <small style="color: gray;">10:16 AM</small>
+      </div>
+
+      <!-- Received Message -->
+      <div class="received-message">
+        <p class="message" style="background-color: #e0e0e0; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 10px;">
+          Doing well, just working on a project.
+        </p>
+        <small style="color: gray;">10:17 AM</small>
+      </div>
+
+      <!-- Sent Message -->
+      <div class="sent-message" style="text-align: right;">
+        <p class="message" style="background-color: #007bff; color: white; padding: 10px; border-radius: 10px; max-width: 75%; margin-bottom: 10px;">
+          Nice! Let me know if you need any help.
+        </p>
+        <small style="color: gray;">10:18 AM</small>
+      </div>
+    </div>
+
+    <!-- Chat input -->
+    <div class="chat-input mt-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Type a message..." aria-label="Message">
+        <button class="btn btn-primary" type="button">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
 			</main>
 		</div>
 	</div>
+	
+	    <nav class="navbar navbar-light fixed-bottom d-block d-md-none" style="background-color: #e3f2fd;">
+    <div class="d-flex justify-content-around w-100">
+        <a th:href="@{/dash-board}" class="flex-fill text-center"><i class="fas fa-tachometer-alt"></i></a>
+        <a th:href="@{/add-employee}" class="flex-fill text-center"><i class="fas fa-user-plus"></i></a>
+        <a th:href="@{/all-employee}" class="flex-fill text-center"><i class="fas fa-users"></i></a>
+        <a th:href="@{/all-employee}" class="flex-fill text-center"><i class="fas fa-pencil-alt"></i></a>
+        <a th:href="@{/create-post}" class="flex-fill text-center"><i class="fas fa-tasks"></i></a>
+        <a th:href="@{/my-profile}" class="flex-fill text-center"><i class="fas fa-user"></i></a>
+        <a  th:href="@{/setting}" class="flex-fill text-center"><i class="fas fa-cog"></i></a>
+    </div>
+</nav>
+
 </body>
 
 <!-- <script

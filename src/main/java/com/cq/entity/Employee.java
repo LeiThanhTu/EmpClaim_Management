@@ -3,6 +3,7 @@ package com.cq.entity;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -15,9 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "EMPLOYEE")
@@ -28,37 +26,55 @@ public class Employee {
 	
 	@Column (name="EMPLOYYE_NAME", length = 100)
 	@NotNull
+	@Size(min = 3, max = 100, message = "Employee Name must be between 3 to 100 characters.")
 	private String employeeName;
 	
-	@Email
+	@Email(message = "Please provide validate email")
+	@NotNull(message = "Email is required")
+	@NotBlank(message = "Email is required")
 	private String email; 
-	
+
+	@Pattern(regexp = "^(M | F)$", message = "Gender is required.")
+	//@NotBlank
+	//@NotNull (message = "Gender is required")
 	private String gender;
-	
+
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Date of birth is required. of this format")
+	@NotNull(message = "Date of birth is required.")
 	private String dateOfBirth;
-	
+
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Join Date is required. of this format")
+	@NotNull(message = "Join date is required.")
 	private String joinDate;
-	
+
+	@Pattern(regexp = "^[6-9]\\d{9}$", message = "Mobile number must be start with 6 to 9. and length should be max 10 characters")
 	private String mobileNumber;
-	
+
+	@Pattern(regexp = "^\\d{12}$", message = "ID Number must be 12 char")
 	private String aadhaarNumb;
-	
+
+	@Pattern(regexp = "^\\d{9,18}$", message = "Account Number must be between 9 to 18 digit")
 	private String accountNumber;
-	
+
+	@NotNull(message = "Department name is required.")
+	@Size(min = 2, max = 100, message = "Department name must be between 2 to 100 digit")
+	@NotBlank(message = "Department name is required.")
 	private String department;
 	
 	private String designation;
-	
+
+	@Size(min = 2, max = 100, message = "Name must be between 2 to 100 digit")
 	private String previousCompany;
-	
+
+	@Pattern(regexp = "^\\d{22}", message = "BHXH must be exactly 10 char")
 	private String pfNumber;
 	
 	private String salary;
 	
-	@Size (max = 1000, min = 10)
+	@Size (max = 1000, min = 10, message = "Curent Address must be between 10 to 1000 char")
 	private String currentAddress;
 	
-	@Size (max = 1000, min = 10)
+	@Size (max = 1000, min = 10, message = "Permanent address must be between 10 to 1000 char")
 	private String permanrntAddress;
 	
 	private boolean active=true;
@@ -70,7 +86,9 @@ public class Employee {
 	private LocalDateTime updateDate;
 
 	private String password;
-	
+
+	@NotNull(message = "Role is required.")
+	@Size(min = 3, max = 10, message = "Role must be between 3 to 10 char")
 	private String role;
 	
 	
