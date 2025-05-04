@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::div})">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Employee Management</title>
+</head>
+<body>
+<div>
+    <div class="container">
+        <div class="row">
+            <!-- Project Employee List -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Project Employee Assignments</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="example">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Project</th>
+                                <th>Employee</th>
+                                <th>Assigned Date</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="assignment : ${projectEmployees}">
+                                <td th:text="${assignment.id}"></td>
+                                <td th:text="${assignment.projectId}"></td>
+                                <td th:text="${assignment.employeeId}"></td>
+                                <td th:text="${assignment.assignedDate}"></td>
+                                <td th:text="${assignment.role}"></td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" th:onclick="'editAssignment(' + ${assignment.id} + ')'">Edit</button>
+                                    <button class="btn btn-danger btn-sm" th:onclick="'deleteAssignment(' + ${assignment.id} + ')'">Delete</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignment Form -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Add New Assignment</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/project-employee/add}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Project</label>
+                                <select class="form-select" name="projectId" required>
+                                    <option value="">Select Project</option>
+                                    <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.projectName}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Employee</label>
+                                <select class="form-select" name="employeeId" required>
+                                    <option value="">Select Employee</option>
+                                    <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.employeeName}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Assigned Date</label>
+                                <input type="date" class="form-control" name="assignedDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Role</label>
+                                <input type="text" class="form-control" name="role" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

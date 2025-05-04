@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::div})">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Management</title>
+</head>
+<body>
+<div class="container-fluid mt-4">
+    <!-- Projects List Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                    <h5 class="mb-0">Projects</h5>
+                    <a th:href="@{/add-project}" class="btn btn-light">New Project</a>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover" id="example">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Project Name</th>
+                            <th>Client Name</th>
+                            <th>Start Date</th>
+                            <th>Lead By</th>
+                            <th>Contact Person</th>
+                            <th>Contact No</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="project : ${projects}">
+                            <td th:text="${project.id}">1</td>
+                            <td th:text="${project.projectName}">Example</td>
+                            <td th:text="${project.clientName}">ABC Corp</td>
+                            <td th:text="${project.startDate}">2024-01-01</td>
+                            <td th:text="${project.leadEmployeeId}">John Doe</td>
+                            <td th:text="${project.contactPerson}">Jane</td>
+                            <td th:text="${project.contactNo}">0123456789</td>
+                            <td th:text="${project.emailId}">abc@email.com</td>
+                            <td>
+                                <a th:href="@{/edit-project/{id}(id=${project.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                <button class="btn btn-sm btn-danger" th:onclick="'deleteProject(' + ${project.id} + ')'">Delete</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DataTables Script -->
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excelHtml5', 'pdfHtml5']
+        });
+    });
+</script>
+
+</body>
+</html>
