@@ -1,11 +1,11 @@
 package com.cq.reposetory;
 
 import com.cq.entity.Employee;
+import com.cq.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ProjectRepos extends JpaRepository<Employee, Integer>{
-	
-	public Employee findByIdAndPassword(int empId, String password ) ;
+@Repository
+public interface ProjectRepo extends JpaRepository<Project, Long>{
 
-	public Employee findByIdAndPasswordAndRole(int empId, String password, String role ) ;
 }

@@ -1,8 +1,8 @@
 com\cq\reposetory\CreatePostRepo.class
 com\cq\controller\HrController.class
+com\cq\entity\Employee.class
 com\cq\service\HrService.class
 com\cq\ClaimManagementProjectApplication.class
-com\cq\entity\Employee.class
 com\cq\ServletInitializer.class
 com\cq\entity\CreatePost.class
 com\cq\reposetory\EmployeeRepo.class

@@ -6,17 +6,17 @@
 </head>
 <body>
 <section>
-  
+
    <div class="container mt-5">
     <table id="example" class="display nowrap" style="width:100%">
         <thead>
             <tr>
-                <th>S.No</th> 
+                <th>S.No</th>
                 <th>Name</th>
                 <th>Position</th>
                 <th>Subject</th>
                 <th>Description</th>
-                 
+
                 <th>Date</th>
                 <th>For Approve</th>
             </tr>
@@ -35,7 +35,7 @@
                 <i th:onclick="|approved(${e.id}, 'DENIED')|"  style="color: red" class="fas fa-times-circle" title="Reject"></i>
                 <i th:onclick="|approved(${e.id}, 'CANCElED')|"  style="color: #f1c40f" class="fas fa-ban" title="Canceled"></i>
                 </span>
-                
+
                  <span th:unless="${e.status == 'PENDING'}">
                     <span th:text="${e.status}"></span>
                  </span>
@@ -44,9 +44,9 @@
     </tbody>
     </table>
     </div>
-    
+
 
 </section>
- 
+
 </body>
 </html>

@@ -22,18 +22,20 @@ public class Compose {
     private String text;
 
     private Integer parentUkid;
-
+    @Column(nullable = false)
     private String status;
-
+    @Column(name = "added_date")
     private String addedDate;
 
     @Transient
     private String position;
     
     @CreationTimestamp
+    @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
+    @Column(name = "update_date")
     private LocalDateTime updateDate;
 
     public Compose() {

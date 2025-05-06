@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="base::layout(~{::div})"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Assign Staff to Project</title>
+  </head>
+  <body>
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">
+                Assign Staff to Project:
+                <span th:text="${project.projectName}"></span>
+              </h5>
+            </div>
+            <div class="card-body">
+              <form
+                th:action="@{/projects/assign-staff/{id}(id=${project.id})}"
+                method="post"
+              >
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Employee</label>
+                    <select
+                      class="form-select"
+                      name="employeeId"
+                      id="employeeSelect"
+                      required
+                      onchange="updateEmail()"
+                    >
+                      <option value="">Select Employee</option>
+                      <option
+                        th:each="employee : ${employees}"
+                        th:value="${employee.id}"
+                        th:text="${employee.employeeName}"
+                        th:data-email="${employee.email}"
+                      ></option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="employeeEmail"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Assigned Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="assignedDate"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Project Role</label>
+                    <select class="form-select" name="role" required>
+                      <option value="">Select Role</option>
+                      <option value="DEVELOPER">Developer</option>
+                      <option value="TESTER">Tester</option>
+                      <option value="DESIGNER">Designer</option>
+                      <option value="BUSINESS_ANALYST">Business Analyst</option>
+                      <option value="PROJECT_MANAGER">Project Manager</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="text-end mt-3">
+                  <a th:href="@{/projects}" class="btn btn-secondary me-2"
+                    >Cancel</a
+                  >
+                  <button type="submit" class="btn btn-primary">
+                    Assign Staff
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function updateEmail() {
+        const select = document.getElementById("employeeSelect");
+        const emailInput = document.getElementById("employeeEmail");
+        const selectedOption = select.options[select.selectedIndex];
+        emailInput.value = selectedOption.getAttribute("data-email") || "";
+      }
+    </script>
+  </body>
+</html>

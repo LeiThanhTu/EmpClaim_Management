@@ -34,13 +34,15 @@ public class Employee {
 	@NotBlank(message = "Email is required")
 	private String email; 
 
-	@Pattern(regexp = "^(M | F)$", message = "Gender is required.")
+	@Pattern(regexp = "^(Male | Famale)$", message = "Gender is required.")
 	//@NotBlank
 	//@NotNull (message = "Gender is required")
 	private String gender;
 
 	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Date of birth is required. of this format")
 	@NotNull(message = "Date of birth is required.")
+	@Column(name = "date_of_birth")
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$")
 	private String dateOfBirth;
 
 	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "Join Date is required. of this format")
@@ -56,17 +58,17 @@ public class Employee {
 	@Pattern(regexp = "^\\d{9,18}$", message = "Account Number must be between 9 to 18 digit")
 	private String accountNumber;
 
+	@Column(name = "department")
 	@NotNull(message = "Department name is required.")
-	@Size(min = 2, max = 100, message = "Department name must be between 2 to 100 digit")
-	@NotBlank(message = "Department name is required.")
 	private String department;
+
 	
 	private String designation;
 
 	@Size(min = 2, max = 100, message = "Name must be between 2 to 100 digit")
 	private String previousCompany;
 
-	@Pattern(regexp = "^\\d{22}", message = "BHXH must be exactly 10 char")
+	// @Pattern(regexp = "^\\d{22}", message = "BHXH must be exactly 10 char")
 	private String pfNumber;
 	
 	private String salary;
@@ -80,6 +82,7 @@ public class Employee {
 	private boolean active=true;
 	
 	@CreationTimestamp
+	@Column(name = "created_date", updatable = false)
 	private LocalDateTime createdDate;
 	
 	@UpdateTimestamp

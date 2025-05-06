@@ -1,66 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::div})">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Employee Management</title>
 </head>
 <body>
-<section>
+<div class="container-fluid mt-4">
+    <!-- Employees List Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center text-white" style="background-color: #adb5bd;">
+                    <h5 class="mb-0">Employees</h5>
+                    <a th:href="@{/add-employee}" class="btn btn-light"> Add New Employee</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="example">
+                            <thead class="table-light">
+                            <tr style="white-space: nowrap;">
+                                <th>EMP ID</th>
+                                <th>Employee Name</th>
+                                <th>Email</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
+                                <th>Joining Date</th>
+                                <th>Mobile Number</th>
+                                <th>Aadhaar Number</th>
+                                <th>Account Number</th>
+                                <th>Department</th>
+                                <th>Previous Company</th>
+                                <th>PF Number</th>
+                                <th>Salary</th>
+                                <th>Current Address</th>
+                                <th>Permanent Address</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody style="white-space: nowrap;">
+                            <tr th:each="e : ${allEmployee}">
+                                <td th:text="'HMP' + ${e.id}">HMP1</td>
+                                <td th:text="${e.employeeName}">Amit Sharma</td>
+                                <td th:text="${e.email}">amit.sharma@example.com</td>
+                                <td th:text="${e.gender}">Male</td>
+                                <td th:text="${e.dateOfBirth}">1990/02/15</td>
+                                <td th:text="${e.joinDate}">2023/05/10</td>
+                                <td th:text="${e.mobileNumber}">9876543210</td>
+                                <td th:text="${e.aadhaarNumb}">1234-5678-9101</td>
+                                <td th:text="${e.accountNumber}">0987654321</td>
+                                <td th:text="${e.department}">Development</td>
+                                <td th:text="${e.previousCompany}">TCS</td>
+                                <td th:text="${e.pfNumber}">PF12345</td>
+                                <td th:text="${e.salary}">₹50,000</td>
+                                <td th:text="${e.currentAddress}">123 Current St, Delhi</td>
+                                <td th:text="${e.permanrntAddress}">456 Permanent St, Delhi</td>
+                                <td th:text="${e.active}">Yes</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a th:onclick="|editRecord(${e.id})|" class="btn btn-link text-primary p-0" title="Edit Employee">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button th:onclick="|deleteRecordById(${e.id})|" class="btn btn-link text-danger p-0" title="Delete Employee">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <h4 style="text-align: center; margin-top: 32px">All Employee</h4>
-  <hr>
-  <div class="container-fluid mt-3 table-tesponsive">
-     
-     
-     <table id="example" class="display nowrap" style="width:100%">
-    <thead>
-        <tr>
-            <th>EMP ID</th> 
-            <th>Employee Name</th>
-            <th>Email</th>
-            <th>Gender</th>
-            <th>Date of Birth</th>
-            <th>Joining Date</th>
-            <th>Mobile Number</th>
-            <th>Aadhaar Number</th>
-            <th>Account Number</th>
-            <th>Department</th>
-            <th>Previous Company</th>
-            <th>PF Number</th>
-            <th>Salary</th>
-            <th>Current Address</th>
-            <th>Permanent Address</th>
-            <th>Active</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-     <tbody>
-        <tr th:each="e : ${allEmployee}">
-         <td th:text="'HMP'+${e.id}">1</td>
-            <td th:text="${e.employeeName}">Amit Sharma</td>
-            <td th:text="${e.email}">amit.sharma@example.com</td>
-            <td th:text="${e.gender}">Male</td>
-            <td th:text="${e.dateOfBirth}">1990/02/15</td>
-            <td th:text="${e.joinDate}">2023/05/10</td>
-            <td th:text="${e.mobileNumber}">9876543210</td>
-            <td th:text="${e.aadhaarNumb}">1234-5678-9101</td>
-            <td th:text="${e.accountNumber}">0987654321</td>
-            <td th:text="${e.department}">Development</td>
-            <td th:text="${e.previousCompany}">TCS</td>
-            <td th:text="${e.pfNumber}">PF12345</td>
-            <td th:text="${e.salary}">₹50,000</td>
-            <td th:text="${e.currentAddress}">123 Current St, Delhi</td>
-            <td th:text="${e.permanrntAddress}">456 Permanent St, Delhi</td>
-            <td th:text="${e.active}">Yes</td>
-            <td> 
-             <a th:onclick="|editRecord(${e.id})|" style="color: blue; cursor: pointer;" class="fa-solid fa-pen-to-square ms-2"></a>
-             <i th:onclick="|deleteRecordById (${e.id})|" style="color: red; cursor: pointer;" class="fas fa-trash ms-2"></i>
-            </td>
-        </tr>
-       </tbody>
-       </table>
-       </div>
-</section>
+<!-- DataTables Script -->
+<script th:inline="javascript">
+    if (!$.fn.DataTable.isDataTable('#example')) {
+        $("#example").DataTable({
+            dom: "Bfrtip",
+            buttons: ["excelHtml5", "pdfHtml5"],
+        });
+    }
+</script>
 
 </body>
 </html>

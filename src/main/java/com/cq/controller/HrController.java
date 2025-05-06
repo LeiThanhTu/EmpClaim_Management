@@ -1,30 +1,30 @@
 package com.cq.controller;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.cq.entity.*;
+import com.cq.reposetory.*;
 import jakarta.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.cq.entity.Compose;
-import com.cq.entity.CreatePost;
-import com.cq.entity.Employee;
-import com.cq.reposetory.ComposeRepo;
-import com.cq.reposetory.CreatePostRepo;
-import com.cq.reposetory.EmployeeRepo;
 import com.cq.service.HrService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+// Add these imports at the top
+import com.cq.entity.Project;
 
 
 @Controller
@@ -41,6 +41,12 @@ public class HrController {
 
 	@Autowired
 	private ComposeRepo composeRepo;
+
+	@Autowired
+	private ProjectRepo projectRepo;
+
+	@Autowired
+	private ProjectEmployeeRepo projectEmployeeRepo;
 	
 	@GetMapping("/login")
 	// @ResponseBody
@@ -105,9 +111,47 @@ public class HrController {
 	}
 	
 	@GetMapping("/dash-board")
-	public String dashBard() {
-		
-		return "dash-board";	
+	public String dashBoard(Model model) {
+		try {
+			// Department counts
+			model.addAttribute("developmentCount", employeeRepo.countByDepartment("Development"));
+			model.addAttribute("qaCount", employeeRepo.countByDepartment("QA Testing")); 
+			model.addAttribute("networkingCount", employeeRepo.countByDepartment("Networking"));
+			model.addAttribute("hrCount", employeeRepo.countByDepartment("HR Team"));
+			model.addAttribute("securityCount", employeeRepo.countByDepartment("Security"));
+			model.addAttribute("salesCount", employeeRepo.countByDepartment("Sales Market"));
+	
+			// Status counts
+			model.addAttribute("pendingCount", composeRepo.countByStatus("PENDING"));
+			model.addAttribute("approvedCount", composeRepo.countByStatus("APPROVE"));
+			model.addAttribute("canceledCount", composeRepo.countByStatus("CANCELED"));
+			model.addAttribute("deniedCount", composeRepo.countByStatus("DENIED"));
+			model.addAttribute("reminderCount", composeRepo.countByStatus("REMINDER"));
+			model.addAttribute("allCount", composeRepo.count());
+	
+			// Recent claims
+			List<Compose> statusList = composeRepo.findTop10ByOrderByAddedDateDesc();
+			model.addAttribute("statusList", statusList);
+	
+			// Upcoming birthdays - simplified query
+			List<Employee> upcomingBirthdays = employeeRepo.findAll().stream()
+				.filter(emp -> {
+					try {
+						String[] dateParts = emp.getDateOfBirth().split("-");
+						return Integer.parseInt(dateParts[1]) == java.time.LocalDate.now().getMonthValue();
+					} catch (Exception e) {
+						return false;
+					}
+				})
+				.collect(Collectors.toList());
+			model.addAttribute("upcomingBirthdays", upcomingBirthdays);
+	
+			return "dash-board";
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", e.getMessage());
+			return "error";
+		}
 	}
 	
 	@GetMapping("/add-employee")
@@ -228,17 +272,25 @@ public class HrController {
 	return "edit-record";
 	}
 	@PostMapping("/edit-employee")
-	public String updateRecord(@ModelAttribute Employee employee) {
-		int id = employee.getId();
-		
-		Employee getEmp = employeeRepo.findById(id).get();
-		
-		if(getEmp !=  null) {
-			employeeRepo.save(employee);
-		}
-		
-		return "redirect:/all-employee";
-	}
+public String updateRecord(@ModelAttribute("employee") Employee employee, RedirectAttributes redirectAttributes) {
+    try {
+        Employee existingEmp = employeeRepo.findById(employee.getId()).orElse(null);
+        if (existingEmp != null) {
+            // Preserve existing values
+            employee.setPassword(existingEmp.getPassword());
+            employee.setRole(existingEmp.getRole());
+            employee.setActive(existingEmp.isActive());
+            
+            // Save updated employee
+            employeeRepo.save(employee);
+            redirectAttributes.addFlashAttribute("message", "Employee updated successfully!");
+        }
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Failed to update employee: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return "redirect:/all-employee";
+}
 	
 	@GetMapping("/deleteRecord-byId")
 	public String deleteRecordById(@RequestParam("id") int id) {
@@ -246,6 +298,7 @@ public class HrController {
 		employeeRepo.deleteById(id);
 		
 		return "redirect:/all-employee";
+		
 	}
 	
 	@GetMapping("/user-dash-board")
@@ -325,5 +378,191 @@ public class HrController {
 		
 		return "redirect:/status";
 	}
-	
+//	// Project Management Methods
+//	@GetMapping("/projects")
+//	public String showProjects(Model model) {
+//		model.addAttribute("projects", projectRepo.findAll());
+//		model.addAttribute("employees", employeeRepo.findAll());
+//		return "project";
+//	}
+	//Add this mapping method
+	@GetMapping("/projects")
+	public String showProjects(Model model) {
+		try {
+			List<Project> projects = service.getAllProjects();
+			List<Employee> employees = service.getAllEmployee();
+
+			model.addAttribute("projects", projects);
+			model.addAttribute("employees", employees);
+			return "/project/project";
+		} catch (Exception e) {
+			model.addAttribute("error", "Error loading projects: " + e.getMessage());
+			return "/project/project";
+		}
+	}
+	@PostMapping("/projects/add")
+	public String addProject(@ModelAttribute Project project, RedirectAttributes redirectAttributes) {
+		try {
+			projectRepo.save(project);
+			redirectAttributes.addFlashAttribute("message", "Project added successfully!");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Failed to add project: " + e.getMessage());
+		}
+		return "redirect:/projects";
+	}
+
+	@PostMapping("/projects/update/{id}")
+	public String updateProject(@PathVariable Long id, @ModelAttribute Project project,
+								RedirectAttributes redirectAttributes) {
+		try {
+			Project existingProject = projectRepo.findById(id)
+					.orElseThrow(() -> new RuntimeException("Project not found"));
+			
+			existingProject.setProjectName(project.getProjectName());
+			existingProject.setClientName(project.getClientName());
+			existingProject.setStartDate(project.getStartDate());
+			existingProject.setEndDate(project.getEndDate());
+			existingProject.setStatus(project.getStatus());
+			existingProject.setBudgetNo(project.getBudgetNo());
+			existingProject.setLeadEmployeeId(project.getLeadEmployeeId());
+			existingProject.setContactPerson(project.getContactPerson());
+			existingProject.setContactNo(project.getContactNo());
+			existingProject.setEmailId(project.getEmailId());
+			
+			projectRepo.save(existingProject);
+			redirectAttributes.addFlashAttribute("success", "Project updated successfully");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Failed to update project");
+		}
+		return "redirect:/projects";
+	}
+
+	@DeleteMapping("/projects/delete/{id}")
+	@ResponseBody
+	public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+		try {
+			projectRepo.deleteById(id);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Failed to delete project");
+		}
+	}
+
+	// Project-Employee Management Methods
+	@PostMapping("/project-employee/add")
+	public String addProjectEmployee(@ModelAttribute ProjectEmployee projectEmployee,
+									 RedirectAttributes redirectAttributes) {
+		try {
+			projectEmployeeRepo.save(projectEmployee);
+			redirectAttributes.addFlashAttribute("success", "Employee assigned successfully");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Failed to assign employee");
+		}
+		return "redirect:/projects";
+	}
+
+	@PostMapping("/project-employee/update/{id}")
+	public String updateProjectEmployee(@PathVariable Long id,
+										@ModelAttribute ProjectEmployee projectEmployee,
+										RedirectAttributes redirectAttributes) {
+		try {
+			projectEmployee.setId(id);
+			projectEmployeeRepo.save(projectEmployee);
+			redirectAttributes.addFlashAttribute("success", "Assignment updated successfully");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", "Failed to update assignment");
+		}
+		return "redirect:/projects";
+	}
+
+	@DeleteMapping("/project-employee/delete/{id}")
+	@ResponseBody
+	public ResponseEntity<?> deleteProjectEmployee(@PathVariable Long id) {
+		try {
+			projectEmployeeRepo.deleteById(id);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Failed to delete assignment");
+		}
+	}
+
+	// Project Details Retrieval Methods
+	@GetMapping("/projects/{id}")
+	@ResponseBody
+	public ResponseEntity<?> getProject(@PathVariable Long id) {
+		try {
+			Project project = projectRepo.findById(id)
+					.orElseThrow(() -> new RuntimeException("Project not found"));
+			return ResponseEntity.ok(project);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Failed to get project details");
+		}
+	}
+
+	// @GetMapping("/project-employee/{id}")
+	// @ResponseBody
+	// public ResponseEntity<?> getProjectEmployee(@PathVariable Long id) {
+	// 	try {
+	// 		ProjectEmployee projectEmployee = projectEmployeeRepo.findById(id)
+	// 				.orElseThrow(() -> new RuntimeException("Assignment not found"));
+	// 		return ResponseEntity.ok(projectEmployee);
+	// 	} catch (Exception e) {
+	// 		return ResponseEntity.badRequest().body("Failed to get assignment details");
+	// 	}
+	// }
+	// @GetMapping("/project-employee")
+	// public String showProjectEmployee(Model model) {
+	// 	model.addAttribute("projects", projectRepo.findAll());
+	// 	model.addAttribute("employees", employeeRepo.findAll());
+	// 	model.addAttribute("projectEmployees", projectEmployeeRepo.findAll());
+	// 	return "/project/project-employee";
+	// }
+
+	@GetMapping("/add-project")
+	public String showAddProjectForm(Model model) {
+		List<Employee> showAddProjectForm = service.getAllEmployee();
+		model.addAttribute("employees", showAddProjectForm);
+		return "/project/add-project";
+	}
+
+
+	@GetMapping("/projects-list")
+public String showProjectsList(Model model) {
+    try {
+        List<Project> projects = projectRepo.findAll();
+        List<Employee> employees = employeeRepo.findAll();
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("employees", employees);
+        return "/project/project";
+    } catch (Exception e) {
+        model.addAttribute("error", "Error loading projects: " + e.getMessage());
+        return "/project/project";
+    }
+}
+
+
+@GetMapping("/projects/edit/{id}")
+public String showEditProjectForm(@PathVariable Long id, Model model) {
+    try {
+        // Lấy thông tin project
+        Project project = projectRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
+        
+        // Lấy danh sách employees
+        List<Employee> employees = employeeRepo.findAll();
+        
+        // Add vào model
+        model.addAttribute("project", project);
+        model.addAttribute("employees", employees);
+        
+        // Return view
+        return "project/edit-project";
+    } catch (Exception e) {
+        // Log lỗi
+        e.printStackTrace();
+        // Redirect về trang projects với thông báo lỗi
+        return "redirect:/projects?error=Failed to load project details";
+    }
+}
 }
