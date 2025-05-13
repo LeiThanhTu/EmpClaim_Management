@@ -2,6 +2,7 @@ package com.cq.entity;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,6 +16,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,8 +35,11 @@ public class Employee {
 	@NotNull(message = "Email is required")
 	@NotBlank(message = "Email is required")
 	private String email; 
-
-	@Pattern(regexp = "^(Male | Famale)$", message = "Gender is required.")
+	
+    @OneToMany(mappedBy = "employee")
+    private List<ProjectEmployee> projectAssignments;
+	
+	@Pattern(regexp = "^(M|F)$", message = "Gender is required.")
 	//@NotBlank
 	//@NotNull (message = "Gender is required")
 	private String gender;
@@ -90,7 +95,7 @@ public class Employee {
 
 	private String password;
 
-	@NotNull(message = "Role is required.")
+	@Column(nullable = true)
 	@Size(min = 3, max = 10, message = "Role must be between 3 to 10 char")
 	private String role;
 	

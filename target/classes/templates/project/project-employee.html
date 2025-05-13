@@ -65,49 +65,43 @@
                 class="table table-bordered table-hover"
                 id="assignmentsTable"
               >
-                <thead class="table-light">
-                  <tr>
-                    <th>Project Name</th>
-                    <th>Employee Name</th>
-                    <th>Employee Email</th>
-                    <th>Assigned Date</th>
-                    <th>Project Role</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="assignment : ${assignments}">
-                    <td th:text="${assignment.project.projectName}">
-                      Project ABC
-                    </td>
-                    <td th:text="${assignment.employee.employeeName}">
-                      John Doe
-                    </td>
-                    <td th:text="${assignment.employee.email}">
-                      johndoe@example.com
-                    </td>
-                    <td th:text="${assignment.assignedDate}">2024-03-15</td>
+              <thead class="table-light">
+                <tr>
+                  <th>Project Name</th>
+                  <th>Employee Name</th>
+                  <th>Employee Email</th>
+                  <th>Assigned Date</th>
+                  <th>End Date</th>
+                  <th>Budget</th>
+                  <th>Project Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="assignment : ${assignments}">
+                    <td th:text="${assignment.project.projectName}">Project ABC</td>
+                    <td th:text="${assignment.employee.employeeName}">John Doe</td>
+                    <td th:text="${assignment.employee.email}">johndoe@example.com</td>
+                    <td th:text="${#temporals.format(assignment.assignedDate, 'dd/MM/yyyy')}">2024-03-15</td>
+                    <td th:text="${#temporals.format(assignment.endDate, 'dd/MM/yyyy')}">2024-12-31</td>
+                    <td th:text="${assignment.budgetAllocation != null ? #numbers.formatDecimal(assignment.budgetAllocation, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}">5000,000 VND</td>
                     <td th:text="${assignment.role}">Developer</td>
                     <td>
-                      <div class="d-flex gap-2">
-                        <a
-                          th:href="@{/project-employee/edit/{id}(id=${assignment.id})}"
-                          class="btn btn-link text-primary p-0"
-                          title="Edit Assignment"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <button
-                          class="btn btn-link text-danger p-0"
-                          th:onclick="'deleteAssignment(' + ${assignment.id} + ')'"
-                          title="Delete Assignment"
-                        >
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
-                      </div>
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/project-employee/edit/{id}(id=${assignment.id})}"
+                               class="btn btn-link text-primary p-0"
+                               title="Edit Assignment">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-link text-danger p-0"
+                                    th:onclick="'deleteAssignment(' + ${assignment.id} + ')'"
+                                    title="Delete Assignment">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </td>
-                  </tr>
-                </tbody>
+                </tr>
+            </tbody>
               </table>
             </div>
           </div>

@@ -1,52 +1,95 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::div})">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <title>Request List</title>
+
 </head>
 <body>
-<section>
 
-   <div class="container mt-5">
-    <table id="example" class="display nowrap" style="width:100%">
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Subject</th>
-                <th>Description</th>
+<!-- Alert messages -->
+<div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${success}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
-                <th>Date</th>
-                <th>For Approve</th>
-            </tr>
-        </thead>
-        <tbody>
-           <tr th:each="e : ${statusList}">
-            <td th:text="${e.id}">1</td>
-            <td th:text="${e.empName}">Mahima Devi</td>
-            <td  th:text="${e.position}">System Architect</td>
-            <td   th:text="${e.subject}">Application</td>
-            <td   th:text="${e.text}">Hello Sir, I want 10 days leave because I am going for training.</td>
-            <td   th:text="${e.addedDate}">2024-04-01</td>
-            <td style="cursor: pointer">
-                <span th:if="${e.status == 'PENDING'}">
-                <i th:onclick="|approved(${e.id}, 'APPROVE')|" style="color: green" class="fas fa-check-circle" title="Approved"></i>
-                <i th:onclick="|approved(${e.id}, 'DENIED')|"  style="color: red" class="fas fa-times-circle" title="Reject"></i>
-                <i th:onclick="|approved(${e.id}, 'CANCElED')|"  style="color: #f1c40f" class="fas fa-ban" title="Canceled"></i>
-                </span>
-
-                 <span th:unless="${e.status == 'PENDING'}">
-                    <span th:text="${e.status}"></span>
-                 </span>
-            </td>
-        </tr>
-    </tbody>
-    </table>
+<div class="container-fluid mt-4">
+    <!-- Support Request Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-header text-white" style="background-color: #adb5bd;">
+                    <h5 class="mb-0">Support Request Management</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="adminRequestTable">
+                            <thead class="table-light">
+                            <tr style="white-space: nowrap;">
+                                <th>No</th>
+                                <th>Employee</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody style="white-space: nowrap;">
+                            <tr th:each="request, stat : ${statusList}">
+                                <td th:text="${stat.count}">1</td>
+                                <td th:text="${request.employeeName}">Nguyen Van A</td>
+                                <td th:text="${request.email}">abc@email.com</td>
+                                <td th:text="${request.position}">Employee</td>
+                                <td th:text="${request.subject}">System error</td>
+                                <td th:text="${#temporals.format(request.createdDate, 'dd/MM/yyyy')}">01/01/2025</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm dropdown-toggle"
+                                                th:class="${'btn btn-sm dropdown-toggle ' +
+                                (request.status == 'PENDING' ? 'btn-warning' :
+                                (request.status == 'APPROVED' ? 'btn-success' :
+                                (request.status == 'DENIED' ? 'btn-danger' : 'btn-secondary')))}"
+                                                data-bs-toggle="dropdown">
+                                            [[${request.status}]]
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" th:href="@{'/approve-byId?id=' + ${request.id} + '&type=APPROVED'}">Approve</a></li>
+                                            <li><a class="dropdown-item" th:href="@{'/approve-byId?id=' + ${request.id} + '&type=DENIED'}">Deny</a></li>
+                                            <li><a class="dropdown-item" th:href="@{'/approve-byId?id=' + ${request.id} + '&type=CANCELED'}">Cancel</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{'/emp-request/view/' + ${request.id}}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#adminRequestTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excel', 'pdf'],
+            order: [[5, 'desc']]
+        });
+    });
+</script>
 
-</section>
 
 </body>
 </html>

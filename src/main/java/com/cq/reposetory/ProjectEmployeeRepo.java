@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface ProjectEmployeeRepo extends JpaRepository<ProjectEmployee, Long> {
     List<ProjectEmployee> findByProjectId(Long projectId);
-    List<ProjectEmployee> findByEmployeeId(Long employeeId);
+    List<ProjectEmployee> findByEmployeeId(Integer employeeId);
+    ProjectEmployee findByProjectIdAndEmployeeId(Long projectId, Integer employeeId);
 }

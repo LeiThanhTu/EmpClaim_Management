@@ -1,0 +1,143 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý yêu cầu</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Quản lý yêu cầu hỗ trợ</h4>
+                    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+         
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="adminRequestTable">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Nhân viên</th>
+                                    <th>Email</th>
+                                    <th>Chức vụ</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="request, stat : ${requests}">
+                                    <td th:text="${stat.count}"></td>
+                                    <td th:text="${request.employeeName}"></td>
+                                    <td th:text="${request.email}"></td>
+                                    <td th:text="${request.position}"></td>
+                                    <td th:text="${request.subject}"></td>
+                                    <td th:text="${#temporals.format(request.createdDate, 'dd/MM/yyyy')}"></td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm dropdown-toggle" 
+                                                    th:class="${'btn btn-sm dropdown-toggle ' + 
+                                                        (request.status == 'PENDING' ? 'btn-warning' : 
+                                                        (request.status == 'APPROVED' ? 'btn-success' : 
+                                                        (request.status == 'DENIED' ? 'btn-danger' : 'btn-secondary')))}"
+                                                    data-bs-toggle="dropdown">
+                                                [[${request.status}]]
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" 
+                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=APPROVED'}">Approved</a></li>
+                                                <li><a class="dropdown-item" href="#" 
+                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=DENIED'}">Denied</a></li>
+                                                <li><a class="dropdown-item" href="#" 
+                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=CANCELED'}">Canceled</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" 
+                                                data-bs-toggle="modal" 
+                                                th:data-bs-target="${'#viewModal' + request.id}">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        
+                                        <!-- View Modal -->
+                                        <div class="modal fade" th:id="${'viewModal' + request.id}">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Chi tiết yêu cầu</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p><strong>Nhân viên:</strong> <span th:text="${request.employeeName}"></span></p>
+                                                                <p><strong>Email:</strong> <span th:text="${request.email}"></span></p>
+                                                                <p><strong>Chức vụ:</strong> <span th:text="${request.position}"></span></p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p><strong>Tiêu đề:</strong> <span th:text="${request.subject}"></span></p>
+                                                                <p><strong>Trạng thái:</strong> 
+                                                                    <span th:class="${'badge ' + 
+                                                                        (request.status == 'PENDING' ? 'bg-warning' : 
+                                                                        (request.status == 'APPROVED' ? 'bg-success' : 
+                                                                        (request.status == 'DENIED' ? 'bg-danger' : 'bg-secondary')))}">
+                                                                        [[${request.status}]]
+                                                                    </span>
+                                                                </p>
+                                                                <p><strong>Thời gian:</strong> <span th:text="${#temporals.format(request.createdDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <h6>Nội dung yêu cầu:</h6>
+                                                        <div th:utext="${request.description}" class="p-3 bg-light rounded"></div>
+                                                        
+                                                        <div th:if="${request.attachmentName != null}" class="mt-3">
+                                                            <h6>File đính kèm:</h6>
+                                                            <a th:href="@{'/emp-request/attachment/' + ${request.id}}" 
+                                                               class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-download"></i> 
+                                                                <span th:text="${request.attachmentName}"></span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <div class="dropdown d-inline-block">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                                Cập nhật trạng thái
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" href="#" 
+                                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=APPROVED'}">Approved</a></li>
+                                                                <li><a class="dropdown-item" href="#" 
+                                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=DENIED'}">Denied</a></li>
+                                                                <li><a class="dropdown-item" href="#" 
+                                                                    th:href="@{'/emp-request/update-status?id=' + ${request.id} + '&status=CANCELED'}">Canceled</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#adminRequestTable').DataTable({
+                "order": [[5, "desc"]]
+            });
+        });
+    </script>
+</body>
+</html>

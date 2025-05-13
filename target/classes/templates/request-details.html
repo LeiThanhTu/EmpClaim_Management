@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{base::layout(~{::section})}"
+>
+  <head>
+    <title>Chi tiết yêu cầu</title>
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <div class="card">
+          <div class="card-body">
+            <h4>Chi tiết yêu cầu hỗ trợ</h4>
+
+            <div
+              th:if="${message}"
+              class="alert alert-success"
+              th:text="${message}"
+            ></div>
+            <div
+              th:if="${error}"
+              class="alert alert-danger"
+              th:text="${error}"
+            ></div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <label class="form-label">Nhân viên</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    readonly
+                    th:value="${request.employeeName}"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    readonly
+                    th:value="${request.email}"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Chức vụ</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    readonly
+                    th:value="${request.position}"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Tiêu đề</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    readonly
+                    th:value="${request.subject}"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Nội dung</label>
+                  <div
+                    class="form-control"
+                    style="min-height: 150px; white-space: pre-wrap"
+                    th:utext="${request.description}"
+                  ></div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Thời gian tạo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    readonly
+                    th:value="${#temporals.format(request.createdDate, 'dd/MM/yyyy HH:mm')}"
+                  />
+                </div>
+
+                <div class="mb-3" th:if="${request.attachmentName != null}">
+                  <label class="form-label">File đính kèm</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      readonly
+                      th:value="${request.attachmentName}"
+                    />
+                    <a
+                      class="btn btn-outline-secondary"
+                      th:href="@{'/emp-request/attachment/' + ${request.id}}"
+                    >
+                      <i class="fas fa-download"></i> Tải xuống
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4" th:if="${isAdmin}">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="mb-0">Quản lý trạng thái</h5>
+                  </div>
+                  <div class="card-body">
+                    <p>
+                      Trạng thái hiện tại:
+                      <span
+                        class="badge"
+                        th:classappend="${
+                                            request.status == 'PENDING' ? 'bg-warning' : 
+                                            request.status == 'APPROVED' ? 'bg-success' : 
+                                            request.status == 'DENIED' ? 'bg-danger' : 'bg-secondary'
+                                        }"
+                        th:text="${request.status}"
+                      ></span>
+                    </p>
+
+                    <div class="d-grid gap-2 mt-3">
+                      <form
+                        th:action="@{/emp-request/update-status}"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <input
+                          type="hidden"
+                          name="id"
+                          th:value="${request.id}"
+                        />
+                        <input type="hidden" name="status" value="APPROVED" />
+                        <button
+                          type="submit"
+                          class="btn btn-success btn-sm w-100"
+                          th:disabled="${request.status == 'APPROVED'}"
+                        >
+                          <i class="fas fa-check"></i> Phê duyệt
+                        </button>
+                      </form>
+
+                      <form
+                        th:action="@{/emp-request/update-status}"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <input
+                          type="hidden"
+                          name="id"
+                          th:value="${request.id}"
+                        />
+                        <input type="hidden" name="status" value="DENIED" />
+                        <button
+                          type="submit"
+                          class="btn btn-danger btn-sm w-100"
+                          th:disabled="${request.status == 'DENIED'}"
+                        >
+                          <i class="fas fa-times"></i> Từ chối
+                        </button>
+                      </form>
+
+                      <form
+                        th:action="@{/emp-request/update-status}"
+                        method="post"
+                        style="display: inline"
+                      >
+                        <input
+                          type="hidden"
+                          name="id"
+                          th:value="${request.id}"
+                        />
+                        <input type="hidden" name="status" value="CANCELED" />
+                        <button
+                          type="submit"
+                          class="btn btn-secondary btn-sm w-100"
+                          th:disabled="${request.status == 'CANCELED'}"
+                        >
+                          <i class="fas fa-ban"></i> Hủy bỏ
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <a
+                th:href="@{${isAdmin ? '/emp-request/admin/list' : '/emp-request/list'}}"
+                class="btn btn-secondary"
+              >
+                <i class="fas fa-arrow-left"></i> Quay lại
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

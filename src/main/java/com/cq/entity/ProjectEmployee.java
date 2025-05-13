@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -15,14 +17,32 @@ public class ProjectEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "project_id", insertable = true, updatable = true)
     private Long projectId;
-    private Long employeeId;
+    
+    @Column(name = "employee_id", insertable = true, updatable = true)
+    private Integer employeeId;
+    
+    @Column(name = "assigned_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate assignedDate;
+    
+    @Column(name = "end_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
+    
+    @Column(name = "budget_allocation")
+    private Double budgetAllocation;
+    
+    @Column(name = "role")
     private String role;
-
-    @Transient
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", insertable = false, updatable = false)
     private Project project;
     
-    @Transient
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
     private Employee employee;
 }

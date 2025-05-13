@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{user-base::layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Projects</title>
+  </head>
+  <body>
+    <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header bg-white text-black">
+                <h5 class="card-title mb-0">
+                  <i class="fas fa-project-diagram"></i> My Projects
+                </h5>
+              </div>
+              <div class="card-body">
+                <div th:if="${error}" class="alert alert-danger">
+                  <i class="fas fa-exclamation-circle"></i>
+                  <span th:text="${error}"></span>
+                </div>
+
+                <div
+                  th:if="${#lists.isEmpty(projects)}"
+                  class="alert alert-info"
+                >
+                  <i class="fas fa-info-circle"></i> No projects assigned yet.
+                </div>
+
+                <div
+                  th:unless="${#lists.isEmpty(projects)}"
+                  class="table-responsive"
+                >
+                  <table class="table table-hover" id="projectTable">
+                    <thead>
+                      <tr>
+                        <th>Project Name</th>
+                        <th>Client</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Budget</th>
+                        <th>Status</th>
+                        <th>Role</th>
+                        <th>Contact Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="project : ${projects}">
+                        <td>
+                          <i class="fas fa-folder-open text-primary"></i>
+                          <span th:text="${project.projectName}"></span>
+                        </td>
+                        <td th:text="${project.clientName}"></td>
+                        <td th:text="${#temporals.format(project.startDate, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${#temporals.format(project.endDate, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${project.budgetNo != null ?  #numbers.formatDecimal(project.budgetNo, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}"></td>
+                        <td>
+                          <span th:class="${'badge ' + (project.status == 'IN_PROGRESS' ? 'bg-primary' : (project.status == 'COMPLETED' ? 'bg-success' : (project.status == 'ON_HOLD' ? 'bg-warning' : 'bg-secondary')))}">
+                            <span th:text="${project.status}"></span>
+                          </span>
+                        </td>
+                        <td>
+                          <span th:with="assignment=${@projectEmployeeRepo.findByProjectIdAndEmployeeId(project.id, employee.id)}">
+                              <span th:if="${project.leadEmployeeId == employee.id}">Project Lead</span>
+                              <span th:unless="${project.leadEmployeeId == employee.id}" 
+                                    th:text="${assignment != null ? assignment.role : 'Team Member'}">
+                              </span>
+                          </span>
+                        </td>
+                        <td>
+                          <i class="fas fa-user"></i>
+                          <span th:text="${project.contactPerson}"></span><br />
+                          <i class="fas fa-phone"></i>
+                          <span th:text="${project.contactNo}"></span><br />
+                          <i class="fas fa-envelope"></i>
+                          <span th:text="${project.emailId}"></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      $(document).ready(function () {
+        $("#projectTable").DataTable({
+          pageLength: 10,
+          order: [[2, "desc"]],
+        });
+      });
+    </script>
+  </body>
+</html>

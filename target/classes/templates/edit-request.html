@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{user-base::layout(~{::section})}"
+>
+  <head>
+    <title>Chỉnh sửa yêu cầu</title>
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4>Chỉnh sửa yêu cầu</h4>
+              <a th:href="@{/emp-request/list}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+              </a>
+            </div>
+
+            <div
+              th:if="${message}"
+              class="alert alert-success"
+              th:text="${message}"
+            ></div>
+            <div
+              th:if="${error}"
+              class="alert alert-danger"
+              th:text="${error}"
+            ></div>
+
+            <form
+              th:action="@{'/emp-request/update/' + ${request.id}}"
+              method="post"
+              enctype="multipart/form-data"
+              id="requestForm"
+            >
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  readonly
+                  th:value="${request.email}"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tên nhân viên</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  readonly
+                  th:value="${request.employeeName}"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label"
+                  >Tiêu đề hỗ trợ <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  name="subject"
+                  class="form-control"
+                  required
+                  th:value="${request.subject}"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label"
+                  >Nội dung <span class="text-danger">*</span></label
+                >
+                <textarea
+                  name="description"
+                  class="form-control"
+                  rows="10"
+                  required
+                  th:text="${request.description}"
+                ></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">File đính kèm</label>
+                <input type="file" name="file" class="form-control" />
+                <small class="text-muted"
+                  >Tải lên file mới sẽ thay thế file hiện tại (nếu có)</small
+                >
+
+                <div th:if="${request.attachmentName != null}" class="mt-2">
+                  <p>
+                    File hiện tại:
+                    <span th:text="${request.attachmentName}"></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

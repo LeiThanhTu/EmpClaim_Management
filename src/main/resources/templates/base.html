@@ -8,6 +8,12 @@
     <meta charset="UTF-8" />
     <title>HMP</title>
     <link rel="icon" th:href="@{/img/login.jpg}" />
+    
+    <!-- User Information for WebSocket -->
+    <meta name="userId" th:content="${session.userId}">
+    <meta name="username" th:content="${session.name}">
+    <meta name="userRole" th:content="${session.desg}">
+    
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link
@@ -23,6 +29,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <link th:href="@{/css/style.css}" rel="stylesheet" />
+    
+    <!-- Custom styles for chat -->
+    <style>
+      .chat-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        border-radius: 5px 5px 0 0;
+      }
+      .chat-user-list {
+        max-height: 150px;
+        overflow-y: auto;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 10px;
+      }
+      .user-item {
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin: 5px 0;
+        cursor: pointer;
+      }
+      .user-item:hover {
+        background-color: #f8f9fa;
+      }
+      .user-item.active {
+        background-color: #e9ecef;
+      }
+      .online-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #28a745;
+        display: inline-block;
+        margin-right: 5px;
+      }
+    </style>
 
     <!-- DataTables Buttons extension -->
     <link
@@ -192,7 +234,9 @@
             aria-labelledby="offcanvasRightLabel"
           >
             <div class="offcanvas-header" style="padding-top: 100px">
-              <h5 id="offcanvasRightLabel">Chat</h5>
+              <h5 id="offcanvasRightLabel">
+                <i class="fas fa-users"></i> Nhóm Chat
+              </h5>
               <button
                 type="button"
                 class="btn-close text-reset"
@@ -201,79 +245,31 @@
               ></button>
             </div>
             <div class="offcanvas-body">
+              <!-- Chat header with online users count -->
+              <div class="chat-header mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="online-indicator"></span>
+                    <span id="online-users-count">0</span> người dùng trực tuyến
+                  </div>
+                  <div>
+                    <span class="badge bg-primary" id="unread-messages">0</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Chat user list -->
+              <div class="chat-user-list mb-2" id="chat-user-list">
+                <!-- Users will be loaded here dynamically -->
+              </div>
+              
+              <!-- Chat messages container -->
               <div
+                id="group-chat-container"
                 class="chat-container"
                 style="max-height: 400px; overflow-y: auto"
               >
-                <!-- Received Message -->
-                <div class="received-message">
-                  <p
-                    class="message"
-                    style="
-                      background-color: #e0e0e0;
-                      padding: 10px;
-                      border-radius: 10px;
-                      max-width: 75%;
-                      margin-bottom: 10px;
-                    "
-                  >
-                    Hello, how are you?
-                  </p>
-                  <small style="color: gray">10:15 AM</small>
-                </div>
-
-                <!-- Sent Message -->
-                <div class="sent-message" style="text-align: right">
-                  <p
-                    class="message"
-                    style="
-                      background-color: #007bff;
-                      color: white;
-                      padding: 10px;
-                      border-radius: 10px;
-                      max-width: 75%;
-                      margin-bottom: 10px;
-                    "
-                  >
-                    I'm good, thanks! What about you?
-                  </p>
-                  <small style="color: gray">10:16 AM</small>
-                </div>
-
-                <!-- Received Message -->
-                <div class="received-message">
-                  <p
-                    class="message"
-                    style="
-                      background-color: #e0e0e0;
-                      padding: 10px;
-                      border-radius: 10px;
-                      max-width: 75%;
-                      margin-bottom: 10px;
-                    "
-                  >
-                    Doing well, just working on a project.
-                  </p>
-                  <small style="color: gray">10:17 AM</small>
-                </div>
-
-                <!-- Sent Message -->
-                <div class="sent-message" style="text-align: right">
-                  <p
-                    class="message"
-                    style="
-                      background-color: #007bff;
-                      color: white;
-                      padding: 10px;
-                      border-radius: 10px;
-                      max-width: 75%;
-                      margin-bottom: 10px;
-                    "
-                  >
-                    Nice! Let me know if you need any help.
-                  </p>
-                  <small style="color: gray">10:18 AM</small>
-                </div>
+                <!-- Chat messages will be loaded here dynamically -->
               </div>
 
               <!-- Chat input -->
@@ -281,11 +277,14 @@
                 <div class="input-group">
                   <input
                     type="text"
+                    id="group-message-input"
                     class="form-control"
-                    placeholder="Type a message..."
+                    placeholder="Nhập tin nhắn..."
                     aria-label="Message"
                   />
-                  <button class="btn btn-primary" type="button">Send</button>
+                  <button id="send-group-message" class="btn btn-primary" type="button">
+                    <i class="fas fa-paper-plane"></i> Gửi
+                  </button>
                 </div>
               </div>
             </div>
@@ -345,11 +344,14 @@
     integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
     crossorigin="anonymous"
   ></script>
-  <script type="text/javascript" src="/js/emp.js"></script>
-  <script type="text/javascript" src="/js/project.js"></script>
+  <!-- WebSocket libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+  <script type="text/javascript" th:src="@{/js/emp.js}"></script>
+  <script type="text/javascript" th:src="@{/js/project.js}"></script>
+  <script type="text/javascript" th:src="@{/js/group-chat.js}"></script>
 
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
   <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -363,4 +365,21 @@
       });
     });
   </script>
+
+<script>
+  // Debug script for admin chat
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Admin page loaded');
+    console.log('Session info in meta tags:');
+    console.log('userId:', document.querySelector('meta[name="userId"]')?.getAttribute('content'));
+    console.log('username:', document.querySelector('meta[name="username"]')?.getAttribute('content'));
+    console.log('userRole:', document.querySelector('meta[name="userRole"]')?.getAttribute('content'));
+    
+    // Check if chat elements exist
+    console.log('Chat elements:');
+    console.log('group-message-input:', document.getElementById('group-message-input') ? 'Found' : 'Not found');
+    console.log('send-group-message:', document.getElementById('send-group-message') ? 'Found' : 'Not found');
+    console.log('group-chat-container:', document.getElementById('group-chat-container') ? 'Found' : 'Not found');
+  });
+</script>
 </html>

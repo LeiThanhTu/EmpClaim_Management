@@ -1,224 +1,217 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" th:replace="~{user-base::layout(~{::section})}">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<section>
-  <h1></h1>
- 
-  <div class="row">
-  
-  
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>Development [9]</b>
-           </div>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{user-base::layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+  </head>
+  <body>
+    <section>
+      <div class="row">
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-code fa-2x mb-2 text-primary"></i>
+                 <h6>Development</h6>
+                 <h4 class="text-primary" th:text="${developmentCount}">9</h4>
+               </div>
+              </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-bug fa-2x mb-2 text-info"></i>
+                 <h6>QA Testing</h6>
+                 <h4 class="text-info" th:text="${qaCount}">5</h4>
+               </div>
+              </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-network-wired fa-2x mb-2 text-success"></i>
+                 <h6>Networking</h6>
+                 <h4 class="text-success" th:text="${networkingCount}">8</h4>
+               </div>
+              </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-users fa-2x mb-2 text-warning"></i>
+                 <h6>HR Team</h6>
+                 <h4 class="text-warning" th:text="${hrCount}">4</h4>
+               </div>
+              </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-shield-alt fa-2x mb-2 text-danger"></i>
+                 <h6>Security</h6>
+                 <h4 class="text-danger" th:text="${securityCount}">2</h4>
+               </div>
+              </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+              <div class="card bg-light">
+               <div class="card-body text-center">
+                 <i class="fas fa-chart-line fa-2x mb-2 text-purple"></i>
+                 <h6>Sales Marketing</h6>
+                 <h4 class="text-purple" th:text="${salesCount}">1</h4>
+               </div>
+              </div>
           </div>
       </div>
       
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>QA Testing [5]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>Networking [8]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>HR Team [4]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>Security [2]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body">
-             <b>Seals Market [1]</b>
-           </div>
-          </div>
-      </div>
-  
-  
-  </div>
-  
-  <div class="row">
-  
-  
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-warning">
-             <b>Pending [9]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-success">
-             <b style="color: white;">Approved [5]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-info">
-             <b style="color: white;">Canceled [8]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-danger">
-             <b style="color: white;">Denied [4]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-primary">
-             <b style="color: white;">All [2]</b>
-           </div>
-          </div>
-      </div>
-      
-      <div class="col-6 col-sm-2 mt-2">
-          <div class="card" style="cursor: pointer;">
-           <div class="card-body bg-secondary">
-             <b style="color: white;">Remainder [1]</b>
-           </div>
-          </div>
-      </div>
-  
-  
-  </div>
-  <!-- End Above Status -->
-  
-  
-  <div class="row mb-5">
-     
-     <div class="col-md-8 mt-3">
-       
-         <div class="card">
-            <div class="card-body">
-              <h5>Recent Activity</h5>
-              <hr>
-              <table  class="table" style="width:100%">
-        <thead>
-            <tr>
-                <th>S.No</th> 
-                 
-                <th>Subject</th>
-                <th>Description</th>
-                 
-                <th>Date</th>
-                <th>For Approve</th>
-            </tr>
-        </thead>
-        <tbody>
-           <tr th:each="e,i : ${statusList}">
-            <td th:text="${i.index + 1}">1</td>
-            
-            <td   th:text="${e.subject}">Application</td>
-            <td   th:text="${e.text}">Hello Sir, I want 10 days leave because I am going for training.</td>
-            <td   th:text="${e.addedDate}">2024-04-01</td>
-            <td style="cursor: pointer">
-                
-                  
-                    <span th:text="${e.status}"></span>
-                 
-            </td>
-        </tr>
-    </tbody>
-    </table>
+      <div class="row">
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-warning text-center">
+                <i class="fas fa-clock fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">Pending</h6>
+                <h4 class="text-white" th:text="${pendingCount}">9</h4>
+              </div>
             </div>
-         </div>
-
-     </div>
-     
-     <div class="col-md-4 mt-3">
-      <div class="card">
-      	<div class="card-body">
-      	 <h5>Up Coming Birthday, Anniversary</h5>
-      	 <hr>
-      	 <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/skp.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Sonu Kumar</b>
-      	   <i class="fa-solid fa-cake-candles mt-1" style="color: red"></i>
-      	   <span class="mt-1">13-02-2025</span>
-      	 </div>
-      	 
-      	  <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/g1.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Mona Kumari</b>
-      	   <i class="fa-solid fa-gift mt-1" style="color: green;	"></i>
-      	   <span class="mt-1">18-01-2025</span>
-      	 </div>
-      	 
-      	 <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/skp.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Sonu Kumar</b>
-      	   <i class="fa-solid fa-cake-candles mt-1" style="color: red"></i>
-      	   <span class="mt-1">13-02-2025</span>
-      	 </div>
-      	 
-      	  <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/g1.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Mona Kumari</b>
-      	   <i class="fa-solid fa-gift mt-1" style="color: green;	"></i>
-      	   <span class="mt-1">18-01-2025</span>
-      	 </div>
-      	 
-      	 <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/skp.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Sonu Kumar</b>
-      	   <i class="fa-solid fa-cake-candles mt-1" style="color: red"></i>
-      	   <span class="mt-1">13-02-2025</span>
-      	 </div>
-      	 
-      	  <div class="d-flex justify-content-around w-100 mt-2">
-      	   
-      	   <img alt="img" src="img/g1.jpg" style="height: 35px; width: 35px; border-radius: 50%">
-      	   <b class="mt-1">Mona Kumari</b>
-      	   <i class="fa-solid fa-gift mt-1" style="color: green;	"></i>
-      	   <span class="mt-1">18-01-2025</span>
-      	 </div>
-      	 
-      	 
-      	</div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-success text-center">
+                <i class="fas fa-check-circle fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">Approved</h6>
+                <h4 class="text-white" th:text="${approvedCount}">5</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-info text-center">
+                <i class="fas fa-ban fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">Canceled</h6>
+                <h4 class="text-white" th:text="${canceledCount}">8</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-danger text-center">
+                <i class="fas fa-times-circle fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">Denied</h6>
+                <h4 class="text-white" th:text="${deniedCount}">4</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-primary text-center">
+                <i class="fas fa-list fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">All</h6>
+                <h4 class="text-white" th:text="${allCount}">2</h4>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-6 col-sm-2 mt-2">
+            <div class="card">
+              <div class="card-body bg-secondary text-center">
+                <i class="fas fa-bell fa-2x mb-2 text-white"></i>
+                <h6 class="text-white">Reminder</h6>
+                <h4 class="text-white" th:text="${reminderCount}">1</h4>
+              </div>
+            </div>
+          </div>
+      
+      <div class="row mb-5">
+        <div class="col-md-8 mt-3">
+          <div class="card">
+            <div class="card-body">
+              <h5><i class="fas fa-history"></i> Recent Claims</h5>
+              <hr>
+              <table class="table table-hover" id="claimsTable">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:if="${#lists.isEmpty(statusList)}">
+                    <td colspan="4" class="text-center">No claims found</td>
+                  </tr>
+                  <tr th:each="e,i : ${statusList}">
+                    <td th:text="${i.index + 1}">1</td>
+                    <td th:text="${e.subject}">Application</td>
+                    <td th:text="${#temporals.format(e.createdDate, 'dd/MM/yyyy')}">2024-04-01</td>
+                    <td>
+                      <span th:class="${'badge ' + 
+                        (e.status == 'PENDING' ? 'bg-warning' : 
+                        (e.status == 'APPROVED' ? 'bg-success' : 
+                        (e.status == 'CANCELED' ? 'bg-info' :
+                        (e.status == 'DENIED' ? 'bg-danger' : 'bg-secondary'))))}">
+                        <span th:text="${e.status}"></span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4 mt-3">
+          <div class="card">
+            <div class="card-body">
+              <h5>
+                <i class="fas fa-calendar-alt"></i> 
+                Birthdays in <span th:text="${#temporals.format(#temporals.createNow(), 'MMMM', new java.util.Locale('en'))}"></span>
+              </h5>
+              <hr>
+              <div th:if="${not #lists.isEmpty(upcomingBirthdays)}" class="upcoming-events">
+                <div th:each="emp : ${upcomingBirthdays}" class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center">
+                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    <div class="ms-3">
+                      <h6 class="mb-0" th:text="${emp.employeeName}">Employee Name</h6>
+                      <small class="text-muted" th:text="${emp.dateOfBirth}">Date</small>
+                    </div>
+                  </div>
+                  <i class="fas fa-birthday-cake text-danger"></i>
+                </div>
+              </div>
+              <div th:if="${#lists.isEmpty(upcomingBirthdays)}" class="text-center text-muted py-3">
+                <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
+                <p class="mb-0">No birthdays this month</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-     </div>
-     
-  </div>
-</section>
- 
-</body>
+    </section>
+    
+    <script>
+    $(document).ready(function() {
+        try {
+            $('#claimsTable').DataTable({
+                "pageLength": 5,
+                "order": [[3, "desc"]]
+            });
+        } catch(error) {
+            console.error("DataTable error:", error);
+        }
+    });
+    </script>
+  </body>
 </html>

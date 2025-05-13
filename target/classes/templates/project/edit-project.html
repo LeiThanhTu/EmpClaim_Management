@@ -107,13 +107,12 @@
                     <div class="col-md-6 mb-3">
                       <label class="form-label">End Date</label>
                       <input
-                              type="date"
-                              class="form-control"
-                              name="endDate"
-                              th:value="${project.endDate}"
-                              th:field1 ="*{endDate}"
-                              required
+                          type="date"
+                          class="form-control"
+                          th:field="*{endDate}"
+                          required
                       />
+                  </div>
                     </div>
                     <div class="col-md-6 mb-3">
                       <label class="form-label">Status</label>
@@ -144,10 +143,12 @@
                     <div class="col-md-6 mb-3">
                       <label class="form-label">Budget</label>
                       <input
-                              type="text"
+                              type="number"
                               class="form-control"
-                              th:field="*{budgetNo}"
+                              name="budgetNo"
+                              th:value="${project.budgetNo}"
                               required
+
                       />
                     </div>
                     <div class="col-md-12 mb-3">

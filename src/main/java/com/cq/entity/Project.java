@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,13 +24,22 @@ public class Project {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    private Long leadEmployeeId;
+    
+    private Integer leadEmployeeId;
     private String contactPerson;
     private String contactNo;
-    private String budgetNo;
+
+    @Column(name = "budget_allocation")
+    private Double budgetNo;
     private String emailId;
     private String status;
+
+
+  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<ProjectEmployee> projectEmployees;
 
 
     @Override
@@ -43,9 +53,10 @@ public class Project {
                 ", leadEmployeeId=" + leadEmployeeId +
                 ", contactPerson='" + contactPerson + '\'' +
                 ", contactNo='" + contactNo + '\'' +
-                ", budgetNo='" + budgetNo + '\'' +
+                ", budgetNo=" + budgetNo +
                 ", emailId='" + emailId + '\'' +
                 ", status='" + status + '\'' +
+                ", projectEmployees=" + projectEmployees +
                 '}';
     }
 }

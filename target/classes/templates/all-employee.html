@@ -58,7 +58,7 @@
                                 <td th:text="${e.active}">Yes</td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <a th:onclick="|editRecord(${e.id})|" class="btn btn-link text-primary p-0" title="Edit Employee">
+                                        <a th:href="@{/edit-record(id=${e.id})}" class="btn btn-link text-primary p-0" title="Edit Employee">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button th:onclick="|deleteRecordById(${e.id})|" class="btn btn-link text-danger p-0" title="Delete Employee">

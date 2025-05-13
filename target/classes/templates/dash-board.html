@@ -145,82 +145,73 @@
   
   <div class="row mb-5">
      
-     <div class="col-md-8 mt-3">
-       
-         <div class="card">
-            <div class="card-body">
-              <h5><i class="fas fa-history"></i> Recent Claims</h5>
-              <hr>
-              <table class="table table-hover" id="claimsTable">
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Subject</th>
-                        <th>Description</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-               <tr th:if="${#lists.isEmpty(statusList)}">
-                 <td colspan="5" class="text-center">No claims found</td>
-                </tr>
-                    <tr th:each="e,i : ${statusList}">
-                        <td th:text="${i.index + 1}">1</td>
-                        <td th:text="${e.subject}">Application</td>
-                        <td th:text="${e.text}">Description</td>
-                        <td th:text="${e.addedDate}">2024-04-01</td>
-                        <td>
-                        
-                            <span th:class="${'badge ' + 
-                                (e.status == 'PENDING' ? 'bg-warning' : 
-                                (e.status == 'APPROVE' ? 'bg-success' : 
-                                (e.status == 'CANCEL'? 'bg-info' :
-                              
-                                (e.status == 'DENIED' ? 'bg-danger' : 'bg-secondary'))))}">
-                                <span th:text="${e.status}"></span>
-                            </span>
-                        </td>
-                       </tr>
-                </tbody>
-<!--                &lt;!&ndash; Similar for upcomingBirthdays &ndash;&gt;-->
-<!--                <div th:if="${upcomingBirthdays == null || upcomingBirthdays.empty}"-->
-<!--                     class="text-center text-muted">-->
-<!--                    No upcoming birthdays-->
-<!--                </div>-->
-              </table>
-            </div>
-         </div>
-     </div>
-     
-     <div class="col-md-4 mt-3">
-      <div class="card">
-          <div class="card-body">
-            <h5>
-              <i class="fas fa-calendar-alt"></i> 
-              Birthdays in <span th:text="${#temporals.format(#temporals.createNow(), 'MMMM', new java.util.Locale('en'))}"></span>
-          </h5>
-              <hr>
-              <div th:if="${not #lists.isEmpty(upcomingBirthdays)}" class="upcoming-events">
-                  <div th:each="emp : ${upcomingBirthdays}" class="d-flex justify-content-between align-items-center mb-3">
-                      <div class="d-flex align-items-center">
-                          <i class="fas fa-user-circle fa-2x text-primary"></i>
-                          <div class="ms-3">
-                              <h6 class="mb-0" th:text="${emp.employeeName}">Employee Name</h6>
-                              <small class="text-muted" th:text="${emp.dateOfBirth}">Date</small>
-                          </div>
+   <!-- Recent Claims section -->
+<div class="col-md-8 mt-3">
+  <div class="card">
+      <div class="card-body">
+          <h5><i class="fas fa-history"></i> Recent Claims</h5>
+          <hr>
+          <table class="table table-hover" id="claimsTable">
+              <thead>
+                  <tr>
+                      <th>S.No</th>
+                      <th>Subject</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr th:if="${#lists.isEmpty(statusList)}">
+                      <td colspan="4" class="text-center">No claims found</td>
+                  </tr>
+                  <tr th:each="e,i : ${statusList}">
+                      <td th:text="${i.index + 1}">1</td>
+                      <td th:text="${e.subject}">Application</td>
+                      <td th:text="${#temporals.format(e.createdDate, 'dd/MM/yyyy')}">2024-04-01</td>
+                      <td>
+                          <span th:class="${'badge ' + 
+                              (e.status == 'PENDING' ? 'bg-warning' : 
+                              (e.status == 'APPROVED' ? 'bg-success' : 
+                              (e.status == 'CANCELED' ? 'bg-info' :
+                              (e.status == 'DENIED' ? 'bg-danger' : 'bg-secondary'))))}">
+                              <span th:text="${e.status}"></span>
+                          </span>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+
+<div class="col-md-4 mt-3">
+  <div class="card">
+      <div class="card-body">
+        <h5>
+          <i class="fas fa-calendar-alt"></i> 
+          Birthdays in <span th:text="${#temporals.format(#temporals.createNow(), 'MMMM', new java.util.Locale('en'))}"></span>
+      </h5>
+          <hr>
+          <div th:if="${not #lists.isEmpty(upcomingBirthdays)}" class="upcoming-events">
+              <div th:each="emp : ${upcomingBirthdays}" class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="d-flex align-items-center">
+                      <i class="fas fa-user-circle fa-2x text-primary"></i>
+                      <div class="ms-3">
+                          <h6 class="mb-0" th:text="${emp.employeeName}">Employee Name</h6>
+                          <small class="text-muted" th:text="${emp.dateOfBirth}">Date</small>
                       </div>
-                      <i class="fas fa-birthday-cake text-danger"></i>
                   </div>
+                  <i class="fas fa-birthday-cake text-danger"></i>
               </div>
-              <div th:if="${#lists.isEmpty(upcomingBirthdays)}" class="text-center text-muted py-3">
-                  <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
-                  <p class="mb-0">No birthdays this month</p>
-              </div>
+          </div>
+          <div th:if="${#lists.isEmpty(upcomingBirthdays)}" class="text-center text-muted py-3">
+              <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
+              <p class="mb-0">No birthdays this month</p>
           </div>
       </div>
   </div>
-  </div>
+</div>
+</div>
 </section>
 
 <script>

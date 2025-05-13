@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.cq.entity.Project;
 import com.cq.entity.ProjectEmployee;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import com.cq.entity.Employee;
 import com.cq.reposetory.CreatePostRepo;
 import com.cq.reposetory.EmployeeRepo;
 import com.cq.reposetory.ProjectRepo;
+
+import jakarta.transaction.Transactional;
+
 import com.cq.reposetory.ProjectEmployeeRepo;
 
 @Service
@@ -79,22 +84,44 @@ public class HrService {
 	}
 
 	public ProjectEmployee assignEmployeeToProject(ProjectEmployee projectEmployee) {
-		// Validate if project and employee exist
-		if (!projectRepo.existsById(projectEmployee.getProjectId())) {
-			throw new RuntimeException("Project not found");
-		}
-		if (!employeeRepo.existsById(Math.toIntExact(projectEmployee.getEmployeeId()))) {
-			throw new RuntimeException("Employee not found");
-		}
-		return projectEmployeeRepo.save(projectEmployee);
+		Project project = projectRepo.findById(projectEmployee.getProjectId())
+		.orElseThrow(() -> new RuntimeException("Project not found"));
+		
+Employee employee = employeeRepo.findById(projectEmployee.getEmployeeId())
+		.orElseThrow(() -> new RuntimeException("Employee not found"));
+
+// Validate dates
+if (projectEmployee.getEndDate() != null && 
+	projectEmployee.getEndDate().isBefore(projectEmployee.getAssignedDate())) {
+	throw new RuntimeException("End date cannot be before assigned date");
+}
+
+// Validate budget allocation
+if (projectEmployee.getBudgetAllocation() != null && projectEmployee.getBudgetAllocation() < 0) {
+	throw new RuntimeException("Budget allocation cannot be negative");
+}
+
+return projectEmployeeRepo.save(projectEmployee);
 	}
 
-	public ProjectEmployee updateProjectEmployee(ProjectEmployee projectEmployee) {
-		if (projectEmployeeRepo.existsById(projectEmployee.getId())) {
-			return projectEmployeeRepo.save(projectEmployee);
-		}
-		throw new RuntimeException("Project assignment not found with id: " + projectEmployee.getId());
-	}
+	@Transactional
+public ProjectEmployee updateProjectEmployee(ProjectEmployee projectEmployee) {
+    ProjectEmployee existing = projectEmployeeRepo.findById(projectEmployee.getId())
+            .orElseThrow(() -> new RuntimeException("Project assignment not found"));
+            
+    // Validate dates
+    if (projectEmployee.getEndDate() != null && 
+        projectEmployee.getEndDate().isBefore(projectEmployee.getAssignedDate())) {
+        throw new RuntimeException("End date cannot be before assigned date");
+    }
+    
+    // Validate budget allocation
+    if (projectEmployee.getBudgetAllocation() != null && projectEmployee.getBudgetAllocation() < 0) {
+        throw new RuntimeException("Budget allocation cannot be negative");
+    }
+    
+    return projectEmployeeRepo.save(projectEmployee);
+}
 
 	public void deleteProjectEmployee(Long id) {
 		if (projectEmployeeRepo.existsById(id)) {
@@ -119,7 +146,7 @@ public class HrService {
 		return projectEmployeeRepo.findByProjectId(projectId);
 	}
 
-	public List<ProjectEmployee> getProjectEmployeesByEmployeeId(Long employeeId) {
+	public List<ProjectEmployee> getProjectEmployeesByEmployeeId(Integer employeeId) {
 		return projectEmployeeRepo.findByEmployeeId(employeeId);
 	}
 

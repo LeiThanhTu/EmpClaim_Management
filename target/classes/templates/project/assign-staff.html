@@ -32,7 +32,7 @@
                       name="employeeId"
                       id="employeeSelect"
                       required
-                      onchange="updateEmail()"
+                      onchange="updateEmail(this)"
                     >
                       <option value="">Select Employee</option>
                       <option
@@ -49,6 +49,7 @@
                       type="email"
                       class="form-control"
                       id="employeeEmail"
+                      name="employeeEmail"
                       readonly
                     />
                   </div>
@@ -58,6 +59,28 @@
                       type="date"
                       class="form-control"
                       name="assignedDate"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">End Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="endDate"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Budget</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="budgetAllocation"
+                      id="budgetAllocation"
+                      placeholder="Enter budget amount"
+                      min="0"
+                      step="1000"
                       required
                     />
                   </div>
@@ -86,15 +109,28 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <script>
-      function updateEmail() {
-        const select = document.getElementById("employeeSelect");
-        const emailInput = document.getElementById("employeeEmail");
-        const selectedOption = select.options[select.selectedIndex];
-        emailInput.value = selectedOption.getAttribute("data-email") || "";
-      }
-    </script>
+      <!-- Di chuyển script vào bên trong container chính -->
+      <script th:inline="javascript">
+        function updateEmail(selectElement) {
+          const emailInput = document.getElementById("employeeEmail");
+          const selectedOption =
+            selectElement.options[selectElement.selectedIndex];
+          if (selectedOption && selectedOption.value) {
+            emailInput.value = selectedOption.getAttribute("data-email");
+          } else {
+            emailInput.value = "";
+          }
+        }
+
+        // Initialize email on page load
+        document.addEventListener("DOMContentLoaded", function () {
+          const selectElement = document.getElementById("employeeSelect");
+          if (selectElement && selectElement.value) {
+            updateEmail(selectElement);
+          }
+        });
+      </script>
+    </div>
   </body>
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{user-base::layout(~{::section})}">
+<head>
+    <title>Yêu cầu của tôi</title>
+</head>
+<body>
+    <section>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Danh sách yêu cầu của tôi</h4>
+                    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="requestTable">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Thời gian</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="request, stat : ${requests}">
+                                    <td th:text="${stat.count}"></td>
+                                    <td th:text="${request.subject}"></td>
+                                    <td th:text="${#temporals.format(request.createdDate, 'dd/MM/yyyy')}"></td>
+                                    <td>
+                                        <span th:class="${'badge ' + 
+                                            (request.status == 'PENDING' ? 'bg-warning' : 
+                                            (request.status == 'APPROVED' ? 'bg-success' : 
+                                            (request.status == 'DENIED' ? 'bg-danger' : 'bg-secondary')))}">
+                                            [[${request.status}]]
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/emp-request/user/view/' + ${request.id}}" 
+                                           class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a th:if="${request.status == 'PENDING'}" 
+                                           th:href="@{'/emp-request/edit/' + ${request.id}}"
+                                           class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

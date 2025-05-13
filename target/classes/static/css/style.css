@@ -58,3 +58,20 @@ table.dataTable thead th.sorting_desc::after {
 	transform: translateY(-50%) rotate(180deg);
 	opacity: 1;
 }
+
+.modal-lg {
+	max-width: 800px;
+}
+.approval-actions .btn {
+	margin-bottom: 5px;
+}
+.current-status .badge {
+	font-size: 1em;
+	padding: 8px 12px;
+}
+.card-body {
+	min-height: 140px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
